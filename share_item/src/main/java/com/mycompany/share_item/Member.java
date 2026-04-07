@@ -14,7 +14,7 @@ public class Member {
     private String name;
     private String address;
     private String email;
-    private final int donatedQty;
+    private int donatedQty;
     private  ArrayList<Item> borrowing = new ArrayList<>();
     private  ArrayList<Item> donatedItems = new ArrayList<>();
     
@@ -65,10 +65,33 @@ public class Member {
     
     public void lend(Item item){
         // lend max of 5 items 
+        
+        int maxBorrow = Math.min(5, this.donatedQty);
+        if (borrowingQty()>= maxBorrow){
+            return;
+        }
+        if (!item.isAvailable()){
+            return;
+        }
+        
+        borrowing.add(item);
+        item.loanTo(this);
+        
     }
     
     public void addDonation(Item item){
-        // tbc
+        if(item == null){
+            return;
+        }
+        // add item to this members donated list
+        donatedItems.add(item);
+            
+        // increase quantity
+        donatedQty++;
+        
+            
+        
+        
     }
     
     public void returnItem(Item item){
