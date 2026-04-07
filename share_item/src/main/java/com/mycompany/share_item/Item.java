@@ -50,7 +50,7 @@ public class Item {
     public void loanTo(Member borrower) {
         if (isAvailable()) {
             this.onLoanTo = borrower;
-            borrower.borrowItem(this); // update member record
+            // borrower.borrowItem(this); // update member record
         } else {
             System.out.println("Item is already on loan.");
         }
