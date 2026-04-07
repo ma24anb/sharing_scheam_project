@@ -16,28 +16,33 @@ public class Share_item {
     final static String[] itemMenuOptions = {"Search items", "Add item", "Update item", "Remove item", "Lend item to member", "Return item to collection"};
 
     private static Collection itemCollection = new Collection();
+
     // this class manages the input validation for non choice inputs such as strings
 
-    public static void addMember() {
+    public static void addMember(Member member) {
+        
     }
 
-    public static void updateMember() {
+    public static void updateMember(Member member) {
     }
 
-    public static void removeMember() {
+    public static void removeMember(Member member) {
     }
 
-    public static void searchItems() {
+    public static Item searchItems() {
 
         String searchKeyword = InputHandler.getInput("Please enter item title");
         ArrayList<Item> fetchedItems = itemCollection.searchItems(searchKeyword);
         Menu fetchedItemsMenu = new Menu(fetchedItems, true);
         int selectedItem = fetchedItemsMenu.run();
-        System.out.println(selectedItem);
+        return fetchedItems.get(selectedItem - 1);
+        
 
     }
 
-    public static void addItem() {
+    public static void addItem(Item item) {
+        itemCollection.
+
     }
 
     public static void updateItem() {
