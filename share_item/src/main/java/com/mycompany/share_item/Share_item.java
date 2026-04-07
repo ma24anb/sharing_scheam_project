@@ -11,16 +11,15 @@ import java.util.ArrayList;
  */
 public class Share_item {
 
-    final static String[] mainMenuOptions = {"Manage Items", "Manage members", "Save data", "Exit program"};
+    final static String[] mainMenuOptions = {"Search Items", "Add Item", "Manage members", "Save data", "Exit program"};
     final static String[] memberMenuOptions = {"Add member", "Update member", "Remove member"};
-    final static String[] itemMenuOptions = {"Search items", "Add item", "Update item", "Remove item", "Lend item to member", "Return item to collection"};
+    final static String[] itemMenuOptions = {"Update item", "Remove item", "Lend item to member", "Return item to collection"};
 
     private static Collection itemCollection = new Collection();
 
     // this class manages the input validation for non choice inputs such as strings
-
     public static void addMember(Member member) {
-        
+
     }
 
     public static void updateMember(Member member) {
@@ -29,26 +28,38 @@ public class Share_item {
     public static void removeMember(Member member) {
     }
 
-    public static Item searchItems() {
+    public static void manageItem(Item item) {
+        Menu itemMenu = new Menu(itemMenuOptions);
+        int selectedItemMenuOption = itemMenu.run();
+        if (selectedItemMenuOption == 1) {
 
-        String searchKeyword = InputHandler.getInput("Please enter item title");
-        ArrayList<Item> fetchedItems = itemCollection.searchItems(searchKeyword);
-        Menu fetchedItemsMenu = new Menu(fetchedItems, true);
-        int selectedItem = fetchedItemsMenu.run();
-        return fetchedItems.get(selectedItem - 1);
-        
+        }
+        else if(selectedItemMenuOption == 2){}
+        else if(selectedItemMenuOption == 3){}
+        else if(selectedItemMenuOption == 4){}
 
     }
 
-    public static void addItem(Item item) {
-        itemCollection.
+    public static void searchItems() {
+
+        String searchKeyword = InputHandler.getInput("Please enter item title");
+        ArrayList<Item> fetchedItems = itemCollection.searchItems(searchKeyword);
+        if(fetchedItems.size() == 0) return;
+        Menu fetchedItemsMenu = new Menu(fetchedItems, true);
+        int selectedItem = fetchedItemsMenu.run();
+        manageItem(fetchedItems.get(selectedItem - 1));
+
+    }
+
+    public static void addItem() {
 
     }
 
     public static void updateItem() {
     }
 
-    public static void removeItem() {
+    public static void removeItem(Item item) {
+        itemCollection.removeItem(item);
     }
 
     public static void lendItem() {
@@ -84,18 +95,19 @@ public class Share_item {
 
         Menu mainMenu = new Menu(mainMenuOptions);
         int selectedOption = mainMenu.run();
-        while (selectedOption != 4) {
+        while (selectedOption != mainMenuOptions.length - 1) {
             switch (selectedOption) {
                 case 1:
-                    manageItems();
+                    searchItems();
                     break;
                 case 2:
-                    manageMembers();
+                    addItem();
                     break;
                 case 3:
-                    saveData();
+                    manageMembers();
                 case 4:
-                    System.out.println("exit");
+                    saveData();
+
             }
 
             selectedOption = mainMenu.run();
