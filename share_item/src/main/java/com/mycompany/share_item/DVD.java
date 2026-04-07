@@ -12,11 +12,11 @@ public class DVD extends Item {
 
     // Attributes (from UML)
     private String director;
-    private String[] audioLanguages; 
+    private String[] audioLanguages;
 
     // Constructor
-    public DVD(String title, String director, Member donatedBy, String language
-            , String[] audioLanguages) {
+    public DVD(String title, String director, Member donatedBy, String language,
+             String[] audioLanguages) {
         super(title, language, donatedBy);
         this.director = director;
         this.audioLanguages = audioLanguages;
