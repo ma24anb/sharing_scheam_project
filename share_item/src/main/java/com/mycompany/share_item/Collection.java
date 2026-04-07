@@ -42,6 +42,6 @@ public class Collection {
     }
 
     public void removeItem(Item item) {
-
+        borrowing.remove(item);
     }
 }
