@@ -3,6 +3,8 @@
  */
 package com.mycompany.share_item;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author ayadm
@@ -13,7 +15,8 @@ public class Share_item {
     final static String[] memberMenuOptions = {"Add member", "Update member", "Remove member"};
     final static String[] itemMenuOptions = {"Search items", "Add item", "Update item", "Remove item", "Lend item to member", "Return item to collection"};
 
-    Collection itemCollection = new Collection();
+    private static Collection itemCollection = new Collection();
+    // this class manages the input validation for non choice inputs such as strings
 
     public static void addMember() {
     }
@@ -25,9 +28,13 @@ public class Share_item {
     }
 
     public static void searchItems() {
-    
-        itemCollection
-        
+
+        String searchKeyword = InputHandler.getInput("Please enter item title");
+        ArrayList<Item> fetchedItems = itemCollection.searchItems(searchKeyword);
+        Menu fetchedItemsMenu = new Menu(fetchedItems, true);
+        int selectedItem = fetchedItemsMenu.run();
+        System.out.println(selectedItem);
+
     }
 
     public static void addItem() {
@@ -50,6 +57,8 @@ public class Share_item {
         int selectedItemsMenuOption = itemMenu.run();
         if (selectedItemsMenuOption == itemMenuOptions.length) {
             return;
+        } else if (selectedItemsMenuOption == 1) {
+            searchItems();
         }
     }
 
@@ -59,8 +68,8 @@ public class Share_item {
         if (selectedMemberMenuOption == memberMenuOptions.length) {
             return;
         }
-    }
 
+    }
 
     public static void saveData() {
 
@@ -71,7 +80,6 @@ public class Share_item {
         Menu mainMenu = new Menu(mainMenuOptions);
         int selectedOption = mainMenu.run();
         while (selectedOption != 4) {
-
             switch (selectedOption) {
                 case 1:
                     manageItems();

@@ -4,6 +4,7 @@
  */
 package com.mycompany.share_item;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -33,6 +34,27 @@ public class Menu {
         }
         this.menuOptionsSet[this.menuOptionsSet.length - 1] = "Return to previous menu";
         this.validNumRange = new int[this.menuOptionsSet.length];
+        for (int range = 0; range < validNumRange.length; range++) { // this for loop automatically defines the range when an object is initialised.
+            validNumRange[range] = range + 1;
+        }
+    }
+
+    public Menu(ArrayList<Item> items, boolean returnOption) {
+
+        // first extract the items title from the array list
+        String[] menuOptionsSet = new String[items.size()];
+        for (int i = 0; i < items.size(); i++) {
+            menuOptionsSet[i] = items.get(i).getTitle().toUpperCase();
+
+        }
+        this.menuOptionsSet = new String[menuOptionsSet.length + 1];
+        for (int i = 0; i < menuOptionsSet.length; i++) {
+            this.menuOptionsSet[i] = menuOptionsSet[i];
+        }
+        this.menuOptionsSet[this.menuOptionsSet.length - 1] = "Return to previous menu";
+        this.validNumRange = new int[this.menuOptionsSet.length];
+
+        // the menu will be 1 based and the correct item has to be calculated by substracting 1
         for (int range = 0; range < validNumRange.length; range++) { // this for loop automatically defines the range when an object is initialised.
             validNumRange[range] = range + 1;
         }
