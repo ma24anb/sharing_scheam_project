@@ -28,9 +28,7 @@ public class Collection {
     }
     
     public ArrayList<Item> searchItems(String searchItem){
-        ArrayList<Item> items = new ArrayList<>();
-        items.add(new Item("hello","english", new Member("test", "test", "test", 0)));
-        return items;
+        return null;
     }
     
     public Item getItem (String title){
