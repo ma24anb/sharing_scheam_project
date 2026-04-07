@@ -13,6 +13,8 @@ public class Share_item {
     final static String[] memberMenuOptions = {"Add member", "Update member", "Remove member"};
     final static String[] itemMenuOptions = {"Search items", "Add item", "Update item", "Remove item", "Lend item to member", "Return item to collection"};
 
+    Collection itemCollection = new Collection();
+
     public static void addMember() {
     }
 
@@ -23,6 +25,9 @@ public class Share_item {
     }
 
     public static void searchItems() {
+    
+        itemCollection
+        
     }
 
     public static void addItem() {
