@@ -44,11 +44,11 @@ public class DVD extends Item {
     // toString method
     @Override
     public String toString() {
-        return "DVD{" +
-                "title='" + getTitle() + '\'' +
-                ", director='" + director + '\'' +
-                ", language='" + getLanguage() + '\'' +
-                ", duration=" + duration + " mins" +
-                '}';
+        return "DVD{"
+                + "title='" + getTitle() + '\''
+                + ", director='" + director + '\''
+                + ", language='" + getLanguage() + '\''
+                + ", duration=" + duration + " mins"
+                + '}';
     }
 }

@@ -9,8 +9,6 @@ package com.mycompany.share_item;
  * @author ayadm
  */
 public class Item {
-    
-
 
     // Attributes
     private String title;
