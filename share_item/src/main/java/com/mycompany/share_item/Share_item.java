@@ -148,18 +148,18 @@ public class Share_item {
     public static void main(String[] args) {
 
         // Dummy members (adjust constructor as needed)
-        Member alice = new Member("Alice", "Smith", "alice@email.com", 1);
-        Member bob = new Member("Bob", "Brown", "bob@email.com", 2);
-        Member charlie = new Member("Charlie", "Johnson", "charlie@email.com", 3);
-        memberCollection.addMember(alice);
-        memberCollection.addMember(bob);
-        memberCollection.addMember(charlie);
+        // Member alice = new Member("Alice", "Smith", "alice@email.com", 1);
+        // Member bob = new Member("Bob", "Brown", "bob@email.com", 2);
+        // Member charlie = new Member("Charlie", "Johnson", "charlie@email.com", 3);
+        // memberCollection.addMember(alice);
+        // memberCollection.addMember(bob);
+        // memberCollection.addMember(charlie);
 
-        // Dummy items (adjust parameters as needed for your Book/DVD constructors)
-        itemCollection.addBook("The Hobbit", "J.R.R. Tolkien", alice, "English", "1234567890");
-        itemCollection.addBook("1984", "George Orwell", bob, "English", "0987654321");
-        itemCollection.addDVD("Inception", "Christopher Nolan", charlie, "English", "11112222");
-        itemCollection.addDVD("The Matrix", "Wachowski Sisters", alice, "English", "33334444");
+        // // Dummy items (adjust parameters as needed for your Book/DVD constructors)
+        // itemCollection.addBook("The Hobbit", "J.R.R. Tolkien", alice, "English", "1234567890");
+        // itemCollection.addBook("1984", "George Orwell", bob, "English", "0987654321");
+        // itemCollection.addDVD("Inception", "Christopher Nolan", charlie, "English", "11112222");
+        // itemCollection.addDVD("The Matrix", "Wachowski Sisters", alice, "English", "33334444");
 
         Menu mainMenu = new Menu(mainMenuOptions);
         int selectedOption = mainMenu.run();

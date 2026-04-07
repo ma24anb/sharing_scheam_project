@@ -7,7 +7,6 @@ public class InputHandler {
 
     static Scanner input = new Scanner(System.in);
 
-
     public static void promptMessage(String message) {
         String format = "-".repeat(message.length());
         System.out.printf("%n%s%n%s%n%s%n", format, message.toUpperCase(), format);
@@ -34,10 +33,10 @@ public class InputHandler {
             Scanner input = new Scanner(System.in);
             promptMessage(message);
             inputInt = input.nextInt();
-            } catch (InputMismatchException e) {
+        } catch (InputMismatchException e) {
             System.out.println("Please enter a number!!");
         }
-        
+
         return inputInt;
 
     }
@@ -46,5 +45,4 @@ public class InputHandler {
         promptMessage(err);
     }
 
-     
 }

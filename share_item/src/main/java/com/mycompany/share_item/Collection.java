@@ -12,36 +12,56 @@ import java.util.*;
  */
 public class Collection {
 
-    private ArrayList<Item> borrowing = new ArrayList<>();
+    private ArrayList<Item> items = new ArrayList<>();
 
     public Collection() {
     }
 
     public void addBook(String title, String author, Member donator,
             String language, String isbn) {
-        borrowing.add(new Book(title, author, donator, language, isbn));
+        Book b = new Book(title, author, donator, language, isbn);
+        items.add(b);
+        donator.addDonation(b);
+
     }
 
-    public void addDVD(String title, String author, Member donator,
-            String language, String isbn) {
-        borrowing.add(new DVD(title, isbn, donator, language, 0));
+    public void addDVD(String title, String director, Member donator,
+            String language, String[] audioLanguages) {
+        DVD d = new DVD(title, director, donator, language, audioLanguages);
+        items.add(d);
+
+        // update member donation record
+        donator.addDonation(d);
+
     }
 
-    public ArrayList<Item> searchItems(String searchItem) {
-        ArrayList<Item> items = new ArrayList<>();
-        for (Item item : borrowing) {
-            if (item.getTitle().toLowerCase().contains(searchItem.toLowerCase())) {
-                items.add(item);
+    public ArrayList<Item> searchItems(String searchTerm) {
+        ArrayList<Item> results = new ArrayList<>();
+
+        for (Item item : items) {
+            if (item.getTitle().toLowerCase().contains(searchTerm.toLowerCase())) {
+                results.add(item);
             }
         }
-        return items;
+
+        return results;
     }
 
     public Item getItem(String title) {
+        for (Item item : items) {
+            if (item.getTitle().equalsIgnoreCase(title)) {
+                return item;
+            }
+        }
         return null;
     }
 
     public void removeItem(Item item) {
-        borrowing.remove(item);
+        if (item == null) {
+            return;
+        }
+
+        items.remove(item);
     }
+
 }

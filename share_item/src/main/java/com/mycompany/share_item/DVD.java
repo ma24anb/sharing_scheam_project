@@ -12,13 +12,14 @@ public class DVD extends Item {
 
     // Attributes (from UML)
     private String director;
-    private int duration; // in minutes
+    private String[] audioLanguages;
 
     // Constructor
-    public DVD(String title, String director, Member donatedBy, String language, int duration) {
+    public DVD(String title, String director, Member donatedBy, String language,
+             String[] audioLanguages) {
         super(title, language, donatedBy);
         this.director = director;
-        this.duration = duration;
+        this.audioLanguages = audioLanguages;
     }
 
     // Getter for director
@@ -31,24 +32,24 @@ public class DVD extends Item {
         this.director = director;
     }
 
-    // Getter for duration
-    public int getDuration() {
-        return duration;
+    // Getter for audioLanguages
+    public String[] getAudioLanguages() {
+        return audioLanguages;
     }
 
-    // Setter for duration
-    public void setDuration(int duration) {
-        this.duration = duration;
+    // Setter for audioLanguages
+    public void setDuration(String[] audioLanguages) {
+        this.audioLanguages = audioLanguages;
     }
 
     // toString method
     @Override
     public String toString() {
-        return "DVD{" +
-                "title='" + getTitle() + '\'' +
-                ", director='" + director + '\'' +
-                ", language='" + getLanguage() + '\'' +
-                ", duration=" + duration + " mins" +
-                '}';
+        return "DVD{"
+                + "title='" + getTitle() + '\''
+                + ", director='" + director + '\''
+                + ", language='" + getLanguage() + '\''
+                + ", Audio Languages=" + audioLanguages + " mins"
+                + '}';
     }
 }
