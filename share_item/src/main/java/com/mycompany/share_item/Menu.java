@@ -16,13 +16,15 @@ public class Menu {
     private String[] menuOptionsSet; // where the options are stored
     private int[] validNumRange; // create the number range for each options set
     private boolean zeroBasedIndexing = false;
+    private String menuName = null;
     Scanner input = new Scanner(System.in);
 
     public Menu(String[] menuOptionsSet) {
         this.menuOptionsSet = menuOptionsSet;
         this.validNumRange = new int[menuOptionsSet.length];
 
-        for (int range = 0; range < validNumRange.length; range++) { // this for loop automatically defines the range when an object is initialised.
+        for (int range = 0; range < validNumRange.length; range++) { // this for loop automatically defines the range
+                                                                     // when an object is initialised.
             validNumRange[range] = range + 1;
         }
     }
@@ -34,7 +36,8 @@ public class Menu {
         }
         this.menuOptionsSet[this.menuOptionsSet.length - 1] = "Return to previous menu";
         this.validNumRange = new int[this.menuOptionsSet.length];
-        for (int range = 0; range < validNumRange.length; range++) { // this for loop automatically defines the range when an object is initialised.
+        for (int range = 0; range < validNumRange.length; range++) { // this for loop automatically defines the range
+                                                                     // when an object is initialised.
             validNumRange[range] = range + 1;
         }
     }
@@ -54,8 +57,10 @@ public class Menu {
         this.menuOptionsSet[this.menuOptionsSet.length - 1] = "Return to previous menu";
         this.validNumRange = new int[this.menuOptionsSet.length];
 
-        // the menu will be 1 based and the correct item has to be calculated by substracting 1
-        for (int range = 0; range < validNumRange.length; range++) { // this for loop automatically defines the range when an object is initialised.
+        // the menu will be 1 based and the correct item has to be calculated by
+        // substracting 1
+        for (int range = 0; range < validNumRange.length; range++) { // this for loop automatically defines the range
+                                                                     // when an object is initialised.
             validNumRange[range] = range + 1;
         }
     }
@@ -92,14 +97,21 @@ public class Menu {
         }
 
         System.out.println("");
-        System.out.printf("%s %s %s%n", "=".repeat(largestStr.length() / 2), "MENU", "=".repeat(largestStr.length() / 2));
+
+        String formatStr = String.format("%s %s %s%n", "=".repeat(largestStr.length() / 2),
+                (this.menuName == null ? "MENU" : this.menuName), "=".repeat(largestStr.length() / 2));
+        System.out.print(formatStr);
         System.out.print(outputStr);
-        System.out.printf("%s%s%s%n", "=".repeat(largestStr.length() / 2), "======", "=".repeat(largestStr.length() / 2));
+        System.out.println("=".repeat(formatStr.length() - 1));
 
         if (zeroBasedIndexing) {
             System.out.println("0: Select to go to Main menu.");
         }
         System.out.print("Please Select an option: ");
+    }
+
+    public void setMenuName(String name) {
+        this.menuName = name.toUpperCase();
     }
 
     public boolean validateInputRange(int option) {
@@ -151,7 +163,7 @@ public class Menu {
                 }
             } else {
                 displayErrorMessage("Please enter a number!");
-                input.next();       // Discard invalid token
+                input.next(); // Discard invalid token
             }
         } while (!isValid);
 

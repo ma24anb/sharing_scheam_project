@@ -27,6 +27,7 @@ public class Share_item {
         }
 
         Menu existingMembersMenu = new Menu(allExistingMemberNames, true);
+        existingMembersMenu.setMenuName("Choose member");
         int selectedMemberOption = existingMembersMenu.run();
         return selectedMemberOption;
     }
@@ -65,6 +66,7 @@ public class Share_item {
             itemMenuOptions.add("Return item");
         }
         Menu itemMenu = new Menu(itemMenuOptions.toArray(new String[0]), true);
+        itemMenu.setMenuName("item menu");
         int selectedItemMenuOption = itemMenu.run();
         if (selectedItemMenuOption == 1) {
             updateItem(item);
@@ -83,13 +85,15 @@ public class Share_item {
     public static void searchItems() {
 
         String searchKeyword = InputHandler.getInput("Please enter item title");
-        System.out.println(searchKeyword);
+        // System.out.println(searchKeyword);
         ArrayList<Item> fetchedItems = itemCollection.searchItems(searchKeyword);
-        System.out.println(fetchedItems);
+        // System.out.println(fetchedItems);
         if (fetchedItems.size() == 0) {
+            InputHandler.promptMessage("Sorry there isn't any results.");
             return;
         }
         Menu fetchedItemsMenu = new Menu(fetchedItems, true);
+        fetchedItemsMenu.setMenuName("items results");
         int selectedItem = fetchedItemsMenu.run();
         // check if the user selects return to previous menu option
         if (selectedItem == fetchedItems.size() + 1) {
@@ -131,8 +135,6 @@ public class Share_item {
             String author = userInputCollection.get(2);
             String ISBN = userInputCollection.get(3);
 
-            Book newBook = new Book(title, author, selectedMember, language, ISBN);
-            selectedMember.addDonation(newBook);
             itemCollection.addBook(title, author, selectedMember, language, ISBN);
 
         } else if (selectedType == 2) {
@@ -146,8 +148,6 @@ public class Share_item {
             String audioLanguages = userInputCollection.get(2);
             String director = userInputCollection.get(3);
 
-            DVD newDVD = new DVD(title, director, selectedMember, caseLanguage, audioLanguages.split(","));
-            selectedMember.addDonation(newDVD);
             itemCollection.addDVD(title, director, selectedMember, caseLanguage, audioLanguages.split(","));
 
         }
@@ -200,6 +200,8 @@ public class Share_item {
 
         }
 
+        InputHandler.promptMessage("Item updated successfully.");
+
     }
 
     public static void removeItem(Item item) {
@@ -210,6 +212,8 @@ public class Share_item {
             borrowingMember.removeItemReferences(item);
         }
         itemCollection.removeItem(item);
+        InputHandler.promptMessage("item removed successfully.");
+
     }
 
     public static void lendItem(Item item) {
@@ -227,22 +231,25 @@ public class Share_item {
                 InputHandler.promptMessage("Sorry the maximum borrowing limit reached already. ");
             } else {
                 selectedMember.lend(item);
+                InputHandler.promptMessage("lend item successfull.");
             }
 
         } else {
             InputHandler.promptMessage("Sorry the item is Already on Loan");
         }
 
-        System.out.println("lend item");
     }
 
     public static void returnItem(Item item) {
         item.returnLoan();
+        InputHandler.promptMessage("return item successfull.");
+
     }
 
     public static void manageMembers() {
         while (true) {
             Menu memberMenu = new Menu(mainMemberMenuOptions, true);
+            memberMenu.setMenuName("main Member menu");
             int selectedMemberMenuOption = memberMenu.run();
             if (selectedMemberMenuOption == mainMemberMenuOptions.length + 1) {
                 return;
@@ -272,8 +279,10 @@ public class Share_item {
             InputHandler.displayMessage("Borrowing Titles: ", borrowingTitles);
         }
 
-        Menu itemMenu = new Menu(subMemberMenuOptions, true);
-        int selectedSubMemberMenuOption = itemMenu.run();
+        Menu memberMenu = new Menu(subMemberMenuOptions, true);
+        memberMenu.setMenuName("member modification menu");
+        int selectedSubMemberMenuOption = memberMenu.run();
+
         if (selectedSubMemberMenuOption == 1) {
             updateMember(member);
         } else if (selectedSubMemberMenuOption == 2) {
@@ -286,10 +295,11 @@ public class Share_item {
     public static void searchMembers() {
 
         String searchKeyword = InputHandler.getInput("Please enter member's name");
-        System.out.println(searchKeyword);
+        // System.out.println(searchKeyword);
         ArrayList<Member> fetchedMembers = memberCollection.searchMembers(searchKeyword);
-        System.out.println(fetchedMembers);
+        // System.out.println(fetchedMembers);
         if (fetchedMembers.size() == 0) {
+            InputHandler.promptMessage("Ooops! we couldn't find any members!");
             return;
         }
         String[] fetchedMemberNames = new String[fetchedMembers.size()];
@@ -314,12 +324,14 @@ public class Share_item {
         String name = InputHandler.getInput("Enter Name");
         String address = InputHandler.getInput("Enter Address");
         String email = InputHandler.getInput("Enter Email");
-        System.out.println(memberCollection.isEmailReserved(email));
+        // System.out.println(memberCollection.isEmailReserved(email));
         while (memberCollection.isEmailReserved(email)) {
             InputHandler.promptMessage("Sorry the email is Already in use.");
             email = InputHandler.getInput("Enter Email");
         }
         memberCollection.addMember(new Member(name, address, email, 0));
+        InputHandler.promptMessage("member added successfully.");
+
     }
 
     public static void updateMember(Member member) {
@@ -344,6 +356,7 @@ public class Share_item {
             String newAddress = InputHandler.getInput("Please enter Address");
             member.setAddress(newAddress);
         }
+        InputHandler.promptMessage("member updated successfully.");
     }
 
     public static void removeMember(Member member) {
@@ -385,6 +398,7 @@ public class Share_item {
         // itemCollection.addDVD("The Matrix", "Wachowski Sisters", alice, "English",
         // "33334444");
         Menu mainMenu = new Menu(mainMenuOptions);
+        mainMenu.setMenuName("main menu");
         int selectedOption = mainMenu.run();
         while (selectedOption != mainMenuOptions.length - 1) {
             switch (selectedOption) {
