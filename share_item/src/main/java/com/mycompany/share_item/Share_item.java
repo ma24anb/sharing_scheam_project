@@ -3,6 +3,8 @@
  */
 package com.mycompany.share_item;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -11,11 +13,11 @@ import java.util.ArrayList;
  */
 public class Share_item {
 
-    final static String[] mainMenuOptions = {"Search Items", "Add Item", "Manage members", "Save data",
-        "Exit program"};
+    final static String[] mainMenuOptions = { "Search Items", "Add Item", "Manage members", "Save data",
+            "Exit program" };
 
-    final static String[] mainMemberMenuOptions = {"Search Members", "Add Member"};
-    final static String[] subMemberMenuOptions = {"Update member", "Remove member"};
+    final static String[] mainMemberMenuOptions = { "Search Members", "Add Member" };
+    final static String[] subMemberMenuOptions = { "Update member", "Remove member" };
 
     private static Collection itemCollection = new Collection();
     private static MemberCollection memberCollection = new MemberCollection();
@@ -114,13 +116,13 @@ public class Share_item {
 
         InputHandler.promptMessage("Please select item type");
 
-        String[] itemTypes = new String[]{"Book", "DVD"};
+        String[] itemTypes = new String[] { "Book", "DVD" };
         Menu itemTypesMenu = new Menu(itemTypes);
         int selectedType = itemTypesMenu.run();
 
-        String[] bookInfoFields = new String[]{"Title", "Language", "Author", "ISBN"};
-        String[] dvdInfoFields = new String[]{"Title", "Case Language", "Audio Languages(seprated by commas)",
-            "Director"};
+        String[] bookInfoFields = new String[] { "Title", "Language", "Author", "ISBN" };
+        String[] dvdInfoFields = new String[] { "Title", "Case Language", "Audio Languages(seprated by commas)",
+                "Director" };
         ArrayList<String> userInputCollection = new ArrayList<>();
 
         // if the item is book
@@ -335,7 +337,7 @@ public class Share_item {
     }
 
     public static void updateMember(Member member) {
-        String[] memberUpdateOptions = new String[]{"Name", "Email", "Address"};
+        String[] memberUpdateOptions = new String[] { "Name", "Email", "Address" };
         Menu memberUpdateOptionsMenu = new Menu(memberUpdateOptions);
         int selectedUpdateField = memberUpdateOptionsMenu.run();
         if (selectedUpdateField == memberUpdateOptions.length + 1) {
@@ -378,25 +380,22 @@ public class Share_item {
     }
 
     public static void saveData() {
-
+        try {
+            String filePath = InputHandler.getInput("Please enter the file path (can be the same or different)");
+            FileHandler.save(filePath, memberCollection, itemCollection);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args) {
 
-        // used for test purposes 
-        // Dummy members (adjust constructor as needed)
-        //Member alice = new Member("Alice", "Smith", "alice@email.com", 1);
-        //Member bob = new Member("Bob", "Brown", "bob@email.com", 2);
-        //Member charlie = new Member("Charlie", "Johnson", "charlie@email.com", 3);
-        //memberCollection.addMember(alice);
-        //memberCollection.addMember(bob);
-        //memberCollection.addMember(charlie);
-        // Dummy items (adjust parameters as needed for your Book/DVD constructors)
-        //itemCollection.addBook("The Hobbit", "J.R.R. Tolkien", alice, "English", "1234567890");
-        //itemCollection.addBook("1984", "George Orwell", bob, "English", "0987654321");
-        //itemCollection.addDVD("Inception", "Christopher Nolan", charlie, "English", new String[] { "1", "2" });
-        // itemCollection.addDVD("The Matrix", "Wachowski Sisters", alice, "English",
-        // "33334444");
+        try {
+            FileHandler.load("input-1.dat", memberCollection, itemCollection);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         Menu mainMenu = new Menu(mainMenuOptions);
         mainMenu.setMenuName("main menu");
         int selectedOption = mainMenu.run();
