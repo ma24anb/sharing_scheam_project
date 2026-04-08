@@ -11,11 +11,11 @@ import java.util.ArrayList;
  */
 public class Share_item {
 
-    final static String[] mainMenuOptions = {"Search Items", "Add Item", "Manage members", "Save data",
-        "Exit program"};
+    final static String[] mainMenuOptions = { "Search Items", "Add Item", "Manage members", "Save data",
+            "Exit program" };
 
-    final static String[] mainMemberMenuOptions = {"Search Members", "Add Member"};
-    final static String[] subMemberMenuOptions = {"Update member", "Remove member"};
+    final static String[] mainMemberMenuOptions = { "Search Members", "Add Member" };
+    final static String[] subMemberMenuOptions = { "Update member", "Remove member" };
 
     private static Collection itemCollection = new Collection();
     private static MemberCollection memberCollection = new MemberCollection();
@@ -103,17 +103,20 @@ public class Share_item {
 
         InputHandler.promptMessage("====== Please choose the member =======");
         int selectedMemberOption = getMemberChoice();
+        if (selectedMemberOption == memberCollection.getAllMembers().size() + 1) {
+            return;
+        }
         Member selectedMember = memberCollection.getAllMembers().get(selectedMemberOption - 1);
 
         InputHandler.promptMessage("Please select item type");
 
-        String[] itemTypes = new String[]{"Book", "DVD"};
+        String[] itemTypes = new String[] { "Book", "DVD" };
         Menu itemTypesMenu = new Menu(itemTypes);
         int selectedType = itemTypesMenu.run();
 
-        String[] bookInfoFields = new String[]{"Title", "Language", "Author", "ISBN"};
-        String[] dvdInfoFields = new String[]{"Title", "Case Language", "Audio Languages(seprated by commas)",
-            "Director"};
+        String[] bookInfoFields = new String[] { "Title", "Language", "Author", "ISBN" };
+        String[] dvdInfoFields = new String[] { "Title", "Case Language", "Audio Languages(seprated by commas)",
+                "Director" };
         ArrayList<String> userInputCollection = new ArrayList<>();
 
         // if the item is book
@@ -145,7 +148,7 @@ public class Share_item {
 
             DVD newDVD = new DVD(title, director, selectedMember, caseLanguage, audioLanguages.split(","));
             selectedMember.addDonation(newDVD);
-            itemCollection.addDVD(title, director, selectedMember, audioLanguages, dvdInfoFields);
+            itemCollection.addDVD(title, director, selectedMember, caseLanguage, audioLanguages.split(","));
 
         }
 
@@ -247,7 +250,7 @@ public class Share_item {
             if (selectedMemberMenuOption == 1) {
                 searchMembers();
             } else if (selectedMemberMenuOption == 2) {
-
+                addNewMember();
             }
         }
     }
@@ -259,8 +262,8 @@ public class Share_item {
         InputHandler.displayMessage(String.format("Postal Address: %s", member.getAddress()));
         InputHandler.displayMessage(String.format("Email Address: %s", member.getEmail()));
         InputHandler.displayMessage(String.format("No of Items Donated: %s", member.getDonatedQty()));
+        InputHandler.displayMessage(String.format("Borrowing quantity: %s", member.borrowingQty()));
         if (member.borrowingQty() != 0) {
-            InputHandler.displayMessage(String.format("Borrowing quantity: ", member.borrowingQty()));
             String[] borrowingTitles = new String[member.borrowingQty()];
             for (int i = 0; i < member.borrowingQty(); i++) {
                 borrowingTitles[i] = member.getLoanItems().get(i).getTitle();
@@ -307,12 +310,20 @@ public class Share_item {
 
     }
 
-    public static void addMember(Member member) {
-        memberCollection.addMember(member);
+    public static void addNewMember() {
+        String name = InputHandler.getInput("Enter Name");
+        String address = InputHandler.getInput("Enter Address");
+        String email = InputHandler.getInput("Enter Email");
+        System.out.println(memberCollection.isEmailReserved(email));
+        while (memberCollection.isEmailReserved(email)) {
+            InputHandler.promptMessage("Sorry the email is Already in use.");
+            email = InputHandler.getInput("Enter Email");
+        }
+        memberCollection.addMember(new Member(name, address, email, 0));
     }
 
     public static void updateMember(Member member) {
-        String[] memberUpdateOptions = new String[]{"Name", "Email", "Address"};
+        String[] memberUpdateOptions = new String[] { "Name", "Email", "Address" };
         Menu memberUpdateOptionsMenu = new Menu(memberUpdateOptions);
         int selectedUpdateField = memberUpdateOptionsMenu.run();
         if (selectedUpdateField == memberUpdateOptions.length + 1) {
@@ -323,12 +334,12 @@ public class Share_item {
             member.setName(newName);
         } else if (selectedUpdateField == 2) {
             String newEmail = InputHandler.getInput("Please enter Email");
-            if (memberCollection.isEmailReserved(newEmail)) {
+            while (memberCollection.isEmailReserved(newEmail)) {
                 InputHandler.promptMessage("Sorry the email is Already in use.");
-            } else {
-                member.setEmail(newEmail);
-
+                newEmail = InputHandler.getInput("Please enter Email");
             }
+            member.setEmail(newEmail);
+
         } else if (selectedUpdateField == 3) {
             String newAddress = InputHandler.getInput("Please enter Address");
             member.setAddress(newAddress);
@@ -370,7 +381,7 @@ public class Share_item {
         // Dummy items (adjust parameters as needed for your Book/DVD constructors)
         itemCollection.addBook("The Hobbit", "J.R.R. Tolkien", alice, "English", "1234567890");
         itemCollection.addBook("1984", "George Orwell", bob, "English", "0987654321");
-        itemCollection.addDVD("Inception", "Christopher Nolan", charlie, "English", new String[]{"1", "2"});
+        itemCollection.addDVD("Inception", "Christopher Nolan", charlie, "English", new String[] { "1", "2" });
         // itemCollection.addDVD("The Matrix", "Wachowski Sisters", alice, "English",
         // "33334444");
 

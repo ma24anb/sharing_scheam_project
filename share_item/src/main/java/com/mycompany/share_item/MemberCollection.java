@@ -27,9 +27,7 @@ public class MemberCollection {
 
     public Member getMemberByEmail(String email) {
         for (Member m : memberCollection) {
-            String memberEmail = m.getEmail();
-            // if the email string matches the member's email
-            if (memberEmail == email) {
+            if (email.toLowerCase().equals(m.getEmail().toLowerCase())) {
                 return m;
             }
         }
@@ -38,15 +36,14 @@ public class MemberCollection {
     }
 
     public boolean isEmailReserved(String email) {
+        boolean isReserved = false;
         for (Member m : memberCollection) {
-            String memberEmail = m.getEmail();
-            // if the email string matches the member's email
-            if (memberEmail == email) {
-                return true;
+            if (email.toLowerCase().equals(m.getEmail().toLowerCase())) {
+                isReserved = true;
             }
         }
         // return null if no results found
-        return false;
+        return isReserved;
     }
 
     public ArrayList<Member> getAllMembers() {
