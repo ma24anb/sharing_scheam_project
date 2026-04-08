@@ -22,6 +22,28 @@ public class Share_item {
 
     // this class manages the input validation for non choice inputs such as strings
     public static void manageItem(Item item) {
+
+        InputHandler.promptMessage("====== Item details ======");
+        InputHandler.promptMessage(String.format("Title: %s", item.getTitle()));
+        InputHandler.promptMessage(String.format("Language: %s", item.getLanguage()));
+        if (item instanceof Book) {
+            Book book = (Book) item;
+            InputHandler.promptMessage(String.format("Author: %s", book.getAuthor()));
+            InputHandler.promptMessage(String.format("ISBN: %s", book.getIsbn()));
+        } else if (item instanceof DVD) {
+            DVD dvd = (DVD) item;
+            InputHandler.promptMessage(String.format("Director: %s", dvd.getDirector()));
+            InputHandler.promptMessage("Audio Languages", dvd.getAudioLanguages());
+        }
+        if (item.isAvailable()) {
+            InputHandler.promptMessage("Status: Available");
+        } else {
+            InputHandler.promptMessage("Status: onLoan");
+            InputHandler.promptMessage(String.format("Borrowed by: %s", item.getBorrower().getName()));
+
+        }
+        InputHandler.promptMessage(String.format("Donated by: %s", item.getDonator().getName()));
+
         Menu itemMenu = new Menu(itemMenuOptions, true);
         int selectedItemMenuOption = itemMenu.run();
         if (selectedItemMenuOption == 1) {
@@ -148,16 +170,16 @@ public class Share_item {
     public static void main(String[] args) {
 
         // Dummy members (adjust constructor as needed)
-        // Member alice = new Member("Alice", "Smith", "alice@email.com", 1);
-        // Member bob = new Member("Bob", "Brown", "bob@email.com", 2);
-        // Member charlie = new Member("Charlie", "Johnson", "charlie@email.com", 3);
-        // memberCollection.addMember(alice);
-        // memberCollection.addMember(bob);
-        // memberCollection.addMember(charlie);
+        Member alice = new Member("Alice", "Smith", "alice@email.com", 1);
+        Member bob = new Member("Bob", "Brown", "bob@email.com", 2);
+        Member charlie = new Member("Charlie", "Johnson", "charlie@email.com", 3);
+        memberCollection.addMember(alice);
+        memberCollection.addMember(bob);
+        memberCollection.addMember(charlie);
 
-        // // Dummy items (adjust parameters as needed for your Book/DVD constructors)
-        // itemCollection.addBook("The Hobbit", "J.R.R. Tolkien", alice, "English", "1234567890");
-        // itemCollection.addBook("1984", "George Orwell", bob, "English", "0987654321");
+        // Dummy items (adjust parameters as needed for your Book/DVD constructors)
+        itemCollection.addBook("The Hobbit", "J.R.R. Tolkien", alice, "English", "1234567890");
+        itemCollection.addBook("1984", "George Orwell", bob, "English", "0987654321");
         // itemCollection.addDVD("Inception", "Christopher Nolan", charlie, "English", "11112222");
         // itemCollection.addDVD("The Matrix", "Wachowski Sisters", alice, "English", "33334444");
 
