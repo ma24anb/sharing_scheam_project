@@ -68,7 +68,7 @@ public class Member {
     }
 
     public void lend(Item item) {
-        // lend max of 5 items 
+        // lend max of 5 items
 
         int maxBorrow = Math.min(5, this.donatedQty);
         if (borrowingQty() >= maxBorrow) {
@@ -103,8 +103,14 @@ public class Member {
         // Only return if this member actually has the item
         if (borrowing.contains(item)) {
             borrowing.remove(item);
-            item.returnLoan();   // Clear onLoanTo inside Item
+            item.returnLoan(); // Clear onLoanTo inside Item
         }
+    }
+
+    public void removeItemReferences(Item item) {
+        // remove all references to the removed item
+        donatedItems.remove(item);
+        borrowing.remove(item);
     }
 
     @Override

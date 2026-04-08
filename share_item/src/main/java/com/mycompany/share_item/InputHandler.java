@@ -12,9 +12,12 @@ public class InputHandler {
         System.out.printf("%n%s%n%s%n%s%n", format, message.toUpperCase(), format);
 
     }
-       public static void promptMessage(String title, String[] message) {
-        String format = "-".repeat(message.length);
-        System.out.printf("%n%s%n%s: %s%n%s%n", format, title, String.join(",",message), format);
+       public static void displayMessage(String title, String[] message) {
+        System.out.printf("%s: %s%n",title, String.join(",",message));
+    }
+
+      public static void displayMessage(String message) {
+        System.out.println(message);
     }
 
     public static String getInput(String message) {

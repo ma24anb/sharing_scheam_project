@@ -22,7 +22,6 @@ public class Collection {
         Book b = new Book(title, author, donator, language, isbn);
         items.add(b);
         donator.addDonation(b);
-
     }
 
     public void addDVD(String title, String director, Member donator,

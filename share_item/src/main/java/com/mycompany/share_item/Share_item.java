@@ -13,38 +13,58 @@ public class Share_item {
 
     final static String[] mainMenuOptions = {"Search Items", "Add Item", "Manage members", "Save data",
         "Exit program"};
-    final static String[] memberMenuOptions = {"Add member", "Update member", "Remove member"};
-    final static String[] itemMenuOptions = {"Update item", "Remove item", "Lend item to member",
-        "Return item to collection"};
+
+    final static String[] mainMemberMenuOptions = {"Search Members", "Add Member"};
+    final static String[] subMemberMenuOptions = {"Update member", "Remove member"};
 
     private static Collection itemCollection = new Collection();
     private static MemberCollection memberCollection = new MemberCollection();
+
+    public static int getMemberChoice() {
+        String[] allExistingMemberNames = new String[memberCollection.getAllMembers().size()];
+        for (int i = 0; i < memberCollection.getAllMembers().size(); i++) {
+            allExistingMemberNames[i] = memberCollection.getAllMembers().get(i).getName();
+        }
+
+        Menu existingMembersMenu = new Menu(allExistingMemberNames, true);
+        int selectedMemberOption = existingMembersMenu.run();
+        return selectedMemberOption;
+    }
 
     // this class manages the input validation for non choice inputs such as strings
     public static void manageItem(Item item) {
 
         InputHandler.promptMessage("====== Item details ======");
-        InputHandler.promptMessage(String.format("Title: %s", item.getTitle()));
-        InputHandler.promptMessage(String.format("Language: %s", item.getLanguage()));
+        InputHandler.displayMessage(String.format("Title: %s", item.getTitle()));
+        InputHandler.displayMessage(String.format("Language: %s", item.getLanguage()));
         if (item instanceof Book) {
             Book book = (Book) item;
-            InputHandler.promptMessage(String.format("Author: %s", book.getAuthor()));
-            InputHandler.promptMessage(String.format("ISBN: %s", book.getIsbn()));
+            InputHandler.displayMessage(String.format("Author: %s", book.getAuthor()));
+            InputHandler.displayMessage(String.format("ISBN: %s", book.getIsbn()));
         } else if (item instanceof DVD) {
             DVD dvd = (DVD) item;
-            InputHandler.promptMessage(String.format("Director: %s", dvd.getDirector()));
-            InputHandler.promptMessage("Audio Languages", dvd.getAudioLanguages());
+            InputHandler.displayMessage(String.format("Director: %s", dvd.getDirector()));
+            InputHandler.displayMessage("Audio Languages", dvd.getAudioLanguages());
         }
         if (item.isAvailable()) {
-            InputHandler.promptMessage("Status: Available");
+            InputHandler.displayMessage("Status: Available");
         } else {
-            InputHandler.promptMessage("Status: onLoan");
-            InputHandler.promptMessage(String.format("Borrowed by: %s", item.getBorrower().getName()));
+            InputHandler.displayMessage("Status: onLoan");
+            InputHandler.displayMessage(String.format("Borrowed by: %s",
+                    item.getBorrower() == null ? "N/A" : item.getBorrower().getName()));
 
         }
-        InputHandler.promptMessage(String.format("Donated by: %s", item.getDonator().getName()));
+        InputHandler.displayMessage(
+                String.format("Donated by: %s", item.getDonator() == null ? "N/A" : item.getDonator().getName()));
 
-        Menu itemMenu = new Menu(itemMenuOptions, true);
+        ArrayList<String> itemMenuOptions = new ArrayList<>();
+        itemMenuOptions.add("Update Item");
+        itemMenuOptions.add("Remove Item");
+        itemMenuOptions.add("Lend Item");
+        if (!item.isAvailable()) {
+            itemMenuOptions.add("Return item");
+        }
+        Menu itemMenu = new Menu(itemMenuOptions.toArray(new String[0]), true);
         int selectedItemMenuOption = itemMenu.run();
         if (selectedItemMenuOption == 1) {
             updateItem(item);
@@ -52,9 +72,9 @@ public class Share_item {
             removeItem(item);
         } else if (selectedItemMenuOption == 3) {
             lendItem(item);
-        } else if (selectedItemMenuOption == 4) {
-            returnItem();
-        } else if (selectedItemMenuOption == itemMenuOptions.length + 1) {
+        } else if (!item.isAvailable() && selectedItemMenuOption == 4) {
+            returnItem(item);
+        } else if (selectedItemMenuOption == itemMenuOptions.size() + 1) {
             return;
         }
 
@@ -80,7 +100,55 @@ public class Share_item {
     }
 
     public static void addItem() {
-        System.out.println("add item");
+
+        InputHandler.promptMessage("====== Please choose the member =======");
+        int selectedMemberOption = getMemberChoice();
+        Member selectedMember = memberCollection.getAllMembers().get(selectedMemberOption - 1);
+
+        InputHandler.promptMessage("Please select item type");
+
+        String[] itemTypes = new String[]{"Book", "DVD"};
+        Menu itemTypesMenu = new Menu(itemTypes);
+        int selectedType = itemTypesMenu.run();
+
+        String[] bookInfoFields = new String[]{"Title", "Language", "Author", "ISBN"};
+        String[] dvdInfoFields = new String[]{"Title", "Case Language", "Audio Languages(seprated by commas)",
+            "Director"};
+        ArrayList<String> userInputCollection = new ArrayList<>();
+
+        // if the item is book
+        if (selectedType == 1) {
+            for (String info : bookInfoFields) {
+                String userInput = InputHandler.getInput(String.format("Please enter: %s", info));
+                userInputCollection.add(userInput);
+
+            }
+            String title = userInputCollection.get(0);
+            String language = userInputCollection.get(1);
+            String author = userInputCollection.get(2);
+            String ISBN = userInputCollection.get(3);
+
+            Book newBook = new Book(title, author, selectedMember, language, ISBN);
+            selectedMember.addDonation(newBook);
+            itemCollection.addBook(title, author, selectedMember, language, ISBN);
+
+        } else if (selectedType == 2) {
+            for (String info : dvdInfoFields) {
+                String userInput = InputHandler.getInput(String.format("Please enter: %s", info));
+                userInputCollection.add(userInput);
+
+            }
+            String title = userInputCollection.get(0);
+            String caseLanguage = userInputCollection.get(1);
+            String audioLanguages = userInputCollection.get(2);
+            String director = userInputCollection.get(3);
+
+            DVD newDVD = new DVD(title, director, selectedMember, caseLanguage, audioLanguages.split(","));
+            selectedMember.addDonation(newDVD);
+            itemCollection.addDVD(title, director, selectedMember, audioLanguages, dvdInfoFields);
+
+        }
+
     }
 
     public static void updateItem(Item item) {
@@ -132,23 +200,110 @@ public class Share_item {
     }
 
     public static void removeItem(Item item) {
+        // if the item is on loan currently
+        if (!item.isAvailable()) {
+            // retrieve the member who is borrowing the item
+            Member borrowingMember = item.getBorrower();
+            borrowingMember.removeItemReferences(item);
+        }
         itemCollection.removeItem(item);
     }
 
     public static void lendItem(Item item) {
+
+        // option to lend the item to a member among all members
+        // first check if the item is actually available and not on loan
+        if (item.isAvailable()) {
+            int selectedMemberOption = getMemberChoice();
+            if (selectedMemberOption == memberCollection.getAllMembers().size() + 1) {
+                return;
+            }
+            Member selectedMember = memberCollection.getAllMembers().get(selectedMemberOption - 1);
+            int maxBorrow = Math.min(5, selectedMember.getDonatedQty());
+            if (selectedMember.borrowingQty() >= maxBorrow) {
+                InputHandler.promptMessage("Sorry the maximum borrowing limit reached already. ");
+            } else {
+                selectedMember.lend(item);
+            }
+
+        } else {
+            InputHandler.promptMessage("Sorry the item is Already on Loan");
+        }
+
         System.out.println("lend item");
     }
 
-    public static void returnItem() {
-        System.out.println("return item");
+    public static void returnItem(Item item) {
+        item.returnLoan();
     }
 
     public static void manageMembers() {
-        Menu memberMenu = new Menu(memberMenuOptions, true);
-        int selectedMemberMenuOption = memberMenu.run();
-        if (selectedMemberMenuOption == memberMenuOptions.length) {
+        while (true) {
+            Menu memberMenu = new Menu(mainMemberMenuOptions, true);
+            int selectedMemberMenuOption = memberMenu.run();
+            if (selectedMemberMenuOption == mainMemberMenuOptions.length + 1) {
+                return;
+            }
+            if (selectedMemberMenuOption == 1) {
+                searchMembers();
+            } else if (selectedMemberMenuOption == 2) {
+
+            }
+        }
+    }
+
+    public static void manageMember(Member member) {
+
+        InputHandler.promptMessage("====== Member details ======");
+        InputHandler.displayMessage(String.format("Name: %s", member.getName()));
+        InputHandler.displayMessage(String.format("Postal Address: %s", member.getAddress()));
+        InputHandler.displayMessage(String.format("Email Address: %s", member.getEmail()));
+        InputHandler.displayMessage(String.format("No of Items Donated: %s", member.getDonatedQty()));
+        if (member.borrowingQty() != 0) {
+            InputHandler.displayMessage(String.format("Borrowing quantity: ", member.borrowingQty()));
+            String[] borrowingTitles = new String[member.borrowingQty()];
+            for (int i = 0; i < member.borrowingQty(); i++) {
+                borrowingTitles[i] = member.getLoanItems().get(i).getTitle();
+            }
+
+            InputHandler.displayMessage("Borrowing Titles: ", borrowingTitles);
+        }
+
+        Menu itemMenu = new Menu(subMemberMenuOptions, true);
+        int selectedSubMemberMenuOption = itemMenu.run();
+        if (selectedSubMemberMenuOption == 1) {
+            updateMember(member);
+        } else if (selectedSubMemberMenuOption == 2) {
+            removeMember(member);
+        } else if (selectedSubMemberMenuOption == subMemberMenuOptions.length + 1) {
             return;
         }
+    }
+
+    public static void searchMembers() {
+
+        String searchKeyword = InputHandler.getInput("Please enter member's name");
+        System.out.println(searchKeyword);
+        ArrayList<Member> fetchedMembers = memberCollection.searchMembers(searchKeyword);
+        System.out.println(fetchedMembers);
+        if (fetchedMembers.size() == 0) {
+            return;
+        }
+        String[] fetchedMemberNames = new String[fetchedMembers.size()];
+        for (int i = 0; i < fetchedMembers.size(); i++) {
+            fetchedMemberNames[i] = fetchedMembers.get(i).getName();
+        }
+        Menu fetchedMemberMenu = new Menu(fetchedMemberNames, true);
+        int selectedItem = fetchedMemberMenu.run();
+        // check if the user selects return to previous menu option
+        if (selectedItem == fetchedMembers.size() + 1) {
+            // if previous menu is selected then go back to the manage members menu
+            // manage members ==> search members ==> select member
+            // select member <== search member <== manage member
+            manageMembers();
+            return;
+        }
+        manageMember(fetchedMembers.get(selectedItem - 1));
 
     }
 
@@ -157,10 +312,45 @@ public class Share_item {
     }
 
     public static void updateMember(Member member) {
+        String[] memberUpdateOptions = new String[]{"Name", "Email", "Address"};
+        Menu memberUpdateOptionsMenu = new Menu(memberUpdateOptions);
+        int selectedUpdateField = memberUpdateOptionsMenu.run();
+        if (selectedUpdateField == memberUpdateOptions.length + 1) {
+            return;
+        }
+        if (selectedUpdateField == 1) {
+            String newName = InputHandler.getInput("Please enter Name");
+            member.setName(newName);
+        } else if (selectedUpdateField == 2) {
+            String newEmail = InputHandler.getInput("Please enter Email");
+            if (memberCollection.isEmailReserved(newEmail)) {
+                InputHandler.promptMessage("Sorry the email is Already in use.");
+            } else {
+                member.setEmail(newEmail);
+
+            }
+        } else if (selectedUpdateField == 3) {
+            String newAddress = InputHandler.getInput("Please enter Address");
+            member.setAddress(newAddress);
+        }
     }
 
     public static void removeMember(Member member) {
+        // check if each item has any references to this member
+        ArrayList<Item> currentMemberDonatedItems = member.getDonatedItems();
+        ArrayList<Item> currentMemberBorrowedItems = member.getLoanItems();
+
+        // for each item remove the member's reference
+        for (Item item : currentMemberDonatedItems) {
+            item.clearDonator();
+        }
+
+        for (Item item : currentMemberBorrowedItems) {
+            item.clearBorrower();
+        }
+
         memberCollection.removeMember(member);
+        InputHandler.promptMessage("Member removed successfully.");
     }
 
     public static void saveData() {
@@ -180,8 +370,9 @@ public class Share_item {
         // Dummy items (adjust parameters as needed for your Book/DVD constructors)
         itemCollection.addBook("The Hobbit", "J.R.R. Tolkien", alice, "English", "1234567890");
         itemCollection.addBook("1984", "George Orwell", bob, "English", "0987654321");
-        // itemCollection.addDVD("Inception", "Christopher Nolan", charlie, "English", "11112222");
-        // itemCollection.addDVD("The Matrix", "Wachowski Sisters", alice, "English", "33334444");
+        itemCollection.addDVD("Inception", "Christopher Nolan", charlie, "English", new String[]{"1", "2"});
+        // itemCollection.addDVD("The Matrix", "Wachowski Sisters", alice, "English",
+        // "33334444");
 
         Menu mainMenu = new Menu(mainMenuOptions);
         int selectedOption = mainMenu.run();

@@ -17,8 +17,8 @@ public class MemberCollection {
     public ArrayList<Member> searchMembers(String name) {
         ArrayList<Member> filteredMembers = new ArrayList<>();
         for (Member m : memberCollection) {
-            String memberName = m.getName();
-            if (memberName.contains(name)) {
+            String memberName = m.getName().toLowerCase();
+            if (memberName.contains(name.toLowerCase())) {
                 filteredMembers.add(m);
             }
         }
@@ -35,6 +35,18 @@ public class MemberCollection {
         }
         // return null if no results found
         return null;
+    }
+
+    public boolean isEmailReserved(String email) {
+        for (Member m : memberCollection) {
+            String memberEmail = m.getEmail();
+            // if the email string matches the member's email
+            if (memberEmail == email) {
+                return true;
+            }
+        }
+        // return null if no results found
+        return false;
     }
 
     public ArrayList<Member> getAllMembers() {
