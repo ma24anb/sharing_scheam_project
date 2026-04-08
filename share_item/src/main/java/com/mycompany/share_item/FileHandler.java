@@ -19,9 +19,9 @@ public class FileHandler {
      * Loads members and items from the given file path. Call this once on
      * startup from Share_item.java.
      *
-     * @param filePath path to the input .dat file
+     * @param filePath         path to the input .dat file
      * @param memberCollection the MemberCollection to populate
-     * @param collection the Collection to populate with Items
+     * @param collection       the Collection to populate with Items
      * @throws IOException if the file cannot be read
      */
     public static void load(String filePath,
@@ -32,7 +32,7 @@ public class FileHandler {
                 new InputStreamReader(new FileInputStream(filePath), "UTF-8"));
 
         String line;
-        Member currentMember = null;  // tracks whose items we are reading
+        Member currentMember = null; // tracks whose items we are reading
         ArrayList<Item> allItems = new ArrayList<>();
 
         // PASS 1 — build all Member, Book and DVD objects
@@ -117,9 +117,9 @@ public class FileHandler {
      * Orphaned items (donatedBy == null) are written first, before any Member
      * blocks, matching the required input file format.
      *
-     * @param filePath destination file path entered by the user
+     * @param filePath         destination file path entered by the user
      * @param memberCollection the MemberCollection containing all members
-     * @param collection the Collection containing all items
+     * @param collection       the Collection containing all items
      * @throws IOException if the file cannot be written
      */
     public static void save(String filePath,
