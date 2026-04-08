@@ -34,6 +34,10 @@ public class Collection {
 
     }
 
+    public void addItem(Item item) {
+        items.add(item);
+    }
+
     public ArrayList<Item> searchItems(String searchTerm) {
         ArrayList<Item> results = new ArrayList<>();
 
@@ -44,6 +48,10 @@ public class Collection {
         }
 
         return results;
+    }
+
+    public ArrayList<Item> getItems() {
+        return items;
     }
 
     public Item getItem(String title) {

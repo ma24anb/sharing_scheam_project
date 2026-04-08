@@ -5,7 +5,7 @@
 //    until all members have been loaded and we can match it.
 // ============================================================
 
-private String borrowerEmail = "";
+/**private String borrowerEmail = "";
 
 public String getBorrowerEmail() {
     return borrowerEmail;
@@ -36,4 +36,7 @@ public ArrayList<Item> getItems() {
 // ============================================================
 // 3. NO CHANGES NEEDED to MemberCollection.java, Member.java,
 //    Book.java, or DVD.java — they are used as-is.
-// ============================================================
+ ============================================================
+ */
+
+// all code edited 

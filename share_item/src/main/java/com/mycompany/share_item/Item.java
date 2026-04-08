@@ -15,6 +15,7 @@ public class Item {
     private String language;
     private Member donatedBy;
     private Member onLoanTo;
+    private String borrowerEmail = "";
 
     // Constructor
     public Item(String title, String language, Member donatedBy) {
@@ -42,6 +43,14 @@ public class Item {
     // Setter for language
     public void setLanguage(String language) {
         this.language = language;
+    }
+
+    public String getBorrowerEmail() {
+        return borrowerEmail;
+    }
+
+    public void setBorrowerEmail(String borrowerEmail) {
+        this.borrowerEmail = borrowerEmail;
     }
 
     // Loan item to a member
@@ -77,12 +86,11 @@ public class Item {
         this.donatedBy = null;
     }
 
-    public void clearBorrower(){
+    public void clearBorrower() {
         this.onLoanTo = null;
     }
-    
-    public Member getBorrower(){
-    return onLoanTo;
-}
-}
 
+    public Member getBorrower() {
+        return onLoanTo;
+    }
+}
