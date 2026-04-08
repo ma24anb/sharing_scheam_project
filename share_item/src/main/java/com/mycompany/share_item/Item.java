@@ -76,4 +76,13 @@ public class Item {
     public void clearDonator() {
         this.donatedBy = null;
     }
+
+    public void clearBorrower(){
+        this.onLoanTo = null;
+    }
+    
+    public Member getBorrower(){
+    return onLoanTo;
 }
+}
+
