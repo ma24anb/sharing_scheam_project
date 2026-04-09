@@ -27,7 +27,9 @@ public class Share_item {
         for (int i = 0; i < memberCollection.getAllMembers().size(); i++) {
             allExistingMemberNames[i] = memberCollection.getAllMembers().get(i).getName();
         }
-
+        if (allExistingMemberNames.length == 0) {
+            InputHandler.displayError("Sorry There isn't any members!!");
+        }
         Menu existingMembersMenu = new Menu(allExistingMemberNames, true);
         existingMembersMenu.setMenuName("Choose member");
         int selectedMemberOption = existingMembersMenu.run();
@@ -399,7 +401,9 @@ public class Share_item {
         Menu mainMenu = new Menu(mainMenuOptions);
         mainMenu.setMenuName("main menu");
         int selectedOption = mainMenu.run();
-        while (selectedOption != mainMenuOptions.length - 1) {
+        // this is to ensure whenever user select the exit ==> the last option is
+        // calculated by the total length of the option + 1
+        while (selectedOption != mainMenuOptions.length + 1) {
             switch (selectedOption) {
                 case 1:
                     searchItems();
@@ -409,8 +413,10 @@ public class Share_item {
                     break;
                 case 3:
                     manageMembers();
+                    break;
                 case 4:
                     saveData();
+                    break;
 
             }
 
