@@ -31,6 +31,9 @@ public class InputHandler {
 
             inputStr = input.nextLine();
         }
+        if(inputStr.equalsIgnoreCase("<")){
+            return null;
+        }
         // Removed input.close() to prevent closing System.in
         return inputStr;
     }

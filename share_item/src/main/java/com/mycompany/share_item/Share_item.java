@@ -119,7 +119,8 @@ public class Share_item {
         InputHandler.promptMessage("Please select item type");
 
         String[] itemTypes = new String[] { "Book", "DVD" };
-        Menu itemTypesMenu = new Menu(itemTypes);
+        Menu itemTypesMenu = new Menu(itemTypes, true);
+        itemTypesMenu.setMenuName("Item type menu");
         int selectedType = itemTypesMenu.run();
 
         String[] bookInfoFields = new String[] { "Title", "Language", "Author", "ISBN" };
@@ -128,9 +129,12 @@ public class Share_item {
         ArrayList<String> userInputCollection = new ArrayList<>();
 
         // if the item is book
+        InputHandler.promptMessage("please enter < to go back to Main menu");
         if (selectedType == 1) {
             for (String info : bookInfoFields) {
                 String userInput = InputHandler.getInput(String.format("Please enter: %s", info));
+                if (userInput == null)
+                    return;
                 userInputCollection.add(userInput);
 
             }
@@ -144,6 +148,8 @@ public class Share_item {
         } else if (selectedType == 2) {
             for (String info : dvdInfoFields) {
                 String userInput = InputHandler.getInput(String.format("Please enter: %s", info));
+                if (userInput == null)
+                    return;
                 userInputCollection.add(userInput);
 
             }
@@ -154,6 +160,9 @@ public class Share_item {
 
             itemCollection.addDVD(title, director, selectedMember, caseLanguage, audioLanguages.split(","));
 
+        } else if (selectedType == itemTypes.length + 1) {
+            addItem();
+            return;
         }
         InputHandler.promptMessage("Item added successfully.");
 
@@ -172,15 +181,21 @@ public class Share_item {
         }
         Menu updateFieldOptionsMenu = new Menu(updateFieldOptions.toArray(new String[0]), true);
         int selectedField = updateFieldOptionsMenu.run();
-        // if the user selects the return to previous menu op
+
+        InputHandler.promptMessage("please enter < to go back to main menu.");
+        // if the user selects the return to previous menu
         if (selectedField == updateFieldOptions.size() + 1) {
             manageItem(item);
         }
         if (selectedField == 1) {
             String newTitle = InputHandler.getInput("Please enter new title");
+            if (newTitle == null)
+                return;
             item.setTitle(newTitle);
         } else if (selectedField == 2) {
-            String newLanguage = InputHandler.getInput(null);
+            String newLanguage = InputHandler.getInput("Please enter new language");
+            if (newLanguage == null)
+                return;
             item.setLanguage(newLanguage);
         }
 
@@ -188,9 +203,13 @@ public class Share_item {
             Book book = (Book) item;
             if (selectedField == 3) {
                 String newAuthor = InputHandler.getInput("Please enter new Author's name");
+                if (newAuthor == null)
+                    return;
                 book.setAuthor(newAuthor);
             } else if (selectedField == 4) {
                 String newISBN = InputHandler.getInput("Please enter new ISBN");
+                if (newISBN == null)
+                    return;
                 book.setIsbn(newISBN);
             }
 
@@ -199,9 +218,13 @@ public class Share_item {
             if (selectedField == 3) {
                 String newAudioLanguages = InputHandler
                         .getInput("Please enter new audio languages (seperated by commas)");
+                if (newAudioLanguages == null)
+                    return;
                 dvd.setAudioLanguages(newAudioLanguages.split(","));
             } else if (selectedField == 4) {
                 String newDirector = InputHandler.getInput("Please enter new Director");
+                if (newDirector == null)
+                    return;
                 dvd.setDirector(newDirector);
             }
 
@@ -330,9 +353,18 @@ public class Share_item {
     }
 
     public static void addNewMember() {
+        InputHandler.promptMessage("please enter < to return to previous menu.");
         String name = InputHandler.getInput("Enter Name");
+        if (name == null)
+            return;
         String address = InputHandler.getInput("Enter Address");
+        if (address == null)
+            return;
+
         String email = InputHandler.getInput("Enter Email");
+        if (email == null)
+            return;
+
         // System.out.println(memberCollection.isEmailReserved(email));
         while (memberCollection.isEmailReserved(email)) {
             InputHandler.promptMessage("Sorry the email is Already in use.");
@@ -352,17 +384,25 @@ public class Share_item {
         }
         if (selectedUpdateField == 1) {
             String newName = InputHandler.getInput("Please enter Name");
+            if (newName == null)
+                return;
             member.setName(newName);
         } else if (selectedUpdateField == 2) {
             String newEmail = InputHandler.getInput("Please enter Email");
+            if (newEmail == null)
+                return;
             while (memberCollection.isEmailReserved(newEmail)) {
                 InputHandler.promptMessage("Sorry the email is Already in use.");
                 newEmail = InputHandler.getInput("Please enter Email");
+                if (newEmail == null)
+                    return;
             }
             member.setEmail(newEmail);
 
         } else if (selectedUpdateField == 3) {
             String newAddress = InputHandler.getInput("Please enter Address");
+            if (newAddress == null)
+                return;
             member.setAddress(newAddress);
         }
         InputHandler.promptMessage("member updated successfully.");
@@ -408,7 +448,7 @@ public class Share_item {
         int selectedOption = mainMenu.run();
         // this is to ensure whenever user select the exit ==> the last option is
         // calculated by the total length of the option + 1
-        while (selectedOption != mainMenuOptions.length + 1) {
+        while (true) {
             switch (selectedOption) {
                 case 1:
                     searchItems();
@@ -422,6 +462,9 @@ public class Share_item {
                 case 4:
                     saveData();
                     break;
+                case 5:
+                    InputHandler.promptMessage("Program terminated");
+                    return;
 
             }
 
