@@ -22,7 +22,6 @@ public class DVDTest {
 
     @Test
     public void testConstructor() {
-        // test object creation and initial values
     }
 
     @Test
@@ -39,12 +38,10 @@ public class DVDTest {
                 languages);
         assertEquals("Christopher Nolan", dvd.getDirector());
 
-        // test getter for director
     }
 
     @Test
     public void testSetDirector() {
-        // test setter for director
         Member donor = new Member("mark", "123456 Street", "john@gmail.com", 0);
 
         String[] languages = { "English", "French", "Spanish" };
@@ -62,7 +59,6 @@ public class DVDTest {
 
     @Test
     public void testGetAudioLanguages() {
-        // test getter for audioLanguages
         Member donor = new Member("mark", "123456 Street", "john@gmail.com", 0);
 
         String[] languages = { "English", "French", "Spanish" };
@@ -82,7 +78,7 @@ public class DVDTest {
         Member donor = new Member("mark", "123456 Street", "john@gmail.com", 0);
 
         String[] languages = { "English", "French", "Spanish" };
-        String[] newLanguages = { "English", "French", "Spanish" , "Japanese"};
+        String[] newLanguages = { "English", "French", "Spanish", "Japanese" };
 
         DVD dvd = new DVD(
                 "Inception",
@@ -91,24 +87,7 @@ public class DVDTest {
                 "English",
                 languages);
 
-        dvd.setLa();
-        assertArrayEquals(languages, dvd.getAudioLanguages());
-    }
-
-    @Test
-    public void testToString() {
-        // test string representation contains correct values
-    }
-
-    // ⭐ Optional (for higher marks)
-
-    @Test
-    public void testEmptyAudioLanguages() {
-        // test behaviour when array is empty
-    }
-
-    @Test
-    public void testNullAudioLanguages() {
-        // test behaviour when array is null
+        dvd.setAudioLanguages(newLanguages);
+        assertArrayEquals(newLanguages, dvd.getAudioLanguages());
     }
 }
