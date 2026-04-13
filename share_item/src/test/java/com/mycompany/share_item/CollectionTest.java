@@ -22,6 +22,7 @@ public class CollectionTest {
     
     @BeforeClass
     public static void setUpClass() {
+        
     }
     
     @AfterClass

@@ -8,7 +8,7 @@ package com.mycompany.share_item;
  *
  * @author ayadm
  */
-public class Item {
+public abstract class Item {
 
     // Attributes
     private String title;
@@ -58,6 +58,9 @@ public class Item {
         if (isAvailable()) {
             this.onLoanTo = borrower;
             // borrower.borrowItem(this); // update member record
+            // this is not needed as the loanTo method is called from the member.lend()
+            // method which already updates the member record
+            // please do not uncomment the above line as it will cause an infinite loop
         } else {
             System.out.println("Item is already on loan.");
         }

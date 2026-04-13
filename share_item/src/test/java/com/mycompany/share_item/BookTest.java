@@ -17,9 +17,6 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public class BookTest {
 
-    public BookTest() {
-    }
-
     @Test
     public void testSetAuthor() {
         Member donor = new Member("John", "Address", "john@email.com", 0);
