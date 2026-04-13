@@ -90,21 +90,4 @@ public class DVDTest {
         dvd.setAudioLanguages(newLanguages);
         assertArrayEquals(newLanguages, dvd.getAudioLanguages());
     }
-
-    @Test
-    public void testToString() {
-        // test string representation contains correct values
-    }
-
-    // ⭐ Optional (for higher marks)
-
-    @Test
-    public void testEmptyAudioLanguages() {
-        // test behaviour when array is empty
-    }
-
-    @Test
-    public void testNullAudioLanguages() {
-        // test behaviour when array is null
-    }
 }
