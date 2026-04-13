@@ -11,6 +11,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author nohimhasitha
@@ -20,4 +22,38 @@ public class CollectionTest {
     public CollectionTest() {
     }
 
+    @Test
+    public void testAddBook() {
+
+    }
+
+    @Test
+    public void testAddDVD() {
+
+    }
+
+    @Test
+    public void testAddItem() {
+
+    }
+
+    @Test
+    public void testSearchItems() {
+
+    }
+
+    @Test
+    public void testGetItems() {
+
+    }
+
+    @Test
+    public void testGetItem() {
+
+    }
+
+    @Test
+    public void testRemoveItem() {
+
+    }
 }
