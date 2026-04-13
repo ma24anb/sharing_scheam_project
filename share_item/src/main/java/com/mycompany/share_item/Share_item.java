@@ -155,6 +155,7 @@ public class Share_item {
             itemCollection.addDVD(title, director, selectedMember, caseLanguage, audioLanguages.split(","));
 
         }
+        InputHandler.promptMessage("Item added successfully.");
 
     }
 
@@ -235,6 +236,8 @@ public class Share_item {
             int maxBorrow = Math.min(5, selectedMember.getDonatedQty());
             if (selectedMember.borrowingQty() >= maxBorrow) {
                 InputHandler.promptMessage("Sorry the maximum borrowing limit reached already. ");
+                // return to manage item menu
+                manageItem(item);
             } else {
                 selectedMember.lend(item);
                 InputHandler.promptMessage("lend item successfull.");
