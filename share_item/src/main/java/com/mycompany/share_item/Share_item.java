@@ -196,7 +196,9 @@ public class Share_item {
         } else if (item instanceof DVD) {
             DVD dvd = (DVD) item;
             if (selectedField == 3) {
-
+                String newAudioLanguages = InputHandler
+                        .getInput("Please enter new audio languages (seperated by commas)");
+                dvd.setAudioLanguages(newAudioLanguages.split(","));
             } else if (selectedField == 4) {
                 String newDirector = InputHandler.getInput("Please enter new Director");
                 dvd.setDirector(newDirector);

@@ -38,7 +38,7 @@ public class DVD extends Item {
     }
 
     // Setter for audioLanguages
-    public void setDuration(String[] audioLanguages) {
+    public void setAudioLanguages(String[] audioLanguages) {
         this.audioLanguages = audioLanguages;
     }
 
