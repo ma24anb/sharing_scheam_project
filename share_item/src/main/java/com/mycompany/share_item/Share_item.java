@@ -184,51 +184,53 @@ public class Share_item {
         Menu updateFieldOptionsMenu = new Menu(updateFieldOptions.toArray(new String[0]), true);
         int selectedField = updateFieldOptionsMenu.run();
 
-        InputHandler.promptMessage("please enter < to go back to main menu.");
         // if the user selects the return to previous menu
         if (selectedField == updateFieldOptions.size() + 1) {
             manageItem(item);
             return;
-        }
-        if (selectedField == 1) {
-            String newTitle = InputHandler.getInput("Please enter new title");
-            if (newTitle == null)
-                return;
-            item.setTitle(newTitle);
-        } else if (selectedField == 2) {
-            String newLanguage = InputHandler.getInput("Please enter new language");
-            if (newLanguage == null)
-                return;
-            item.setLanguage(newLanguage);
-        }
+        } else {
+            InputHandler.promptMessage("please enter < to go back to main menu.");
 
-        if (item instanceof Book) {
-            Book book = (Book) item;
-            if (selectedField == 3) {
-                String newAuthor = InputHandler.getInput("Please enter new Author's name");
-                if (newAuthor == null)
+            if (selectedField == 1) {
+                String newTitle = InputHandler.getInput("Please enter new title");
+                if (newTitle == null)
                     return;
-                book.setAuthor(newAuthor);
-            } else if (selectedField == 4) {
-                String newISBN = InputHandler.getInput("Please enter new ISBN");
-                if (newISBN == null)
+                item.setTitle(newTitle);
+            } else if (selectedField == 2) {
+                String newLanguage = InputHandler.getInput("Please enter new language");
+                if (newLanguage == null)
                     return;
-                book.setIsbn(newISBN);
+                item.setLanguage(newLanguage);
             }
 
-        } else if (item instanceof DVD) {
-            DVD dvd = (DVD) item;
-            if (selectedField == 3) {
-                String newAudioLanguages = InputHandler
-                        .getInput("Please enter new audio languages (seperated by commas)");
-                if (newAudioLanguages == null)
-                    return;
-                dvd.setAudioLanguages(newAudioLanguages.split(","));
-            } else if (selectedField == 4) {
-                String newDirector = InputHandler.getInput("Please enter new Director");
-                if (newDirector == null)
-                    return;
-                dvd.setDirector(newDirector);
+            if (item instanceof Book) {
+                Book book = (Book) item;
+                if (selectedField == 3) {
+                    String newAuthor = InputHandler.getInput("Please enter new Author's name");
+                    if (newAuthor == null)
+                        return;
+                    book.setAuthor(newAuthor);
+                } else if (selectedField == 4) {
+                    String newISBN = InputHandler.getInput("Please enter new ISBN");
+                    if (newISBN == null)
+                        return;
+                    book.setIsbn(newISBN);
+                }
+
+            } else if (item instanceof DVD) {
+                DVD dvd = (DVD) item;
+                if (selectedField == 3) {
+                    String newAudioLanguages = InputHandler
+                            .getInput("Please enter new audio languages (seperated by commas)");
+                    if (newAudioLanguages == null)
+                        return;
+                    dvd.setAudioLanguages(newAudioLanguages.split(","));
+                } else if (selectedField == 4) {
+                    String newDirector = InputHandler.getInput("Please enter new Director");
+                    if (newDirector == null)
+                        return;
+                    dvd.setDirector(newDirector);
+                }
             }
 
         }
