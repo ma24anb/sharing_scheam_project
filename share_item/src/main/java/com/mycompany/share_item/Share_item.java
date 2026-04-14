@@ -113,7 +113,6 @@ public class Share_item {
 
     public static void addItem() {
 
-        InputHandler.promptMessage("====== Please choose the member =======");
         int selectedMemberOption = getMemberChoice();
         if (selectedMemberOption == memberCollection.getAllMembers().size() + 1) {
             return;
@@ -133,7 +132,6 @@ public class Share_item {
         ArrayList<String> userInputCollection = new ArrayList<>();
 
         // if the item is book
-        InputHandler.promptMessage("please enter < to go back to Main menu");
         if (selectedType == 1) {
             for (String info : bookInfoFields) {
                 String userInput = InputHandler.getInput(String.format("Please enter: %s", info));
@@ -190,6 +188,7 @@ public class Share_item {
         // if the user selects the return to previous menu
         if (selectedField == updateFieldOptions.size() + 1) {
             manageItem(item);
+            return;
         }
         if (selectedField == 1) {
             String newTitle = InputHandler.getInput("Please enter new title");
