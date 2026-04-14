@@ -88,7 +88,11 @@ public class Share_item {
 
     public static void searchItems() {
 
+        InputHandler.promptMessage("Please enter < to return to main menu");
         String searchKeyword = InputHandler.getInput("Please enter item title");
+        if (searchKeyword == null)
+            return;
+
         // System.out.println(searchKeyword);
         ArrayList<Item> fetchedItems = itemCollection.searchItems(searchKeyword);
         // System.out.println(fetchedItems);
@@ -325,8 +329,13 @@ public class Share_item {
     }
 
     public static void searchMembers() {
-
+        InputHandler.promptMessage("Please enter < to go back to main menu");
         String searchKeyword = InputHandler.getInput("Please enter member's name");
+        if (searchKeyword == null) {
+            // immediately return to the previous menu ==> main member menu
+            // as soon as return is executed it will go back to main member menu
+            return;
+        }
         // System.out.println(searchKeyword);
         ArrayList<Member> fetchedMembers = memberCollection.searchMembers(searchKeyword);
         // System.out.println(fetchedMembers);
@@ -339,13 +348,13 @@ public class Share_item {
             fetchedMemberNames[i] = fetchedMembers.get(i).getName();
         }
         Menu fetchedMemberMenu = new Menu(fetchedMemberNames, true);
+        fetchedMemberMenu.setMenuName("member search results");
         int selectedItem = fetchedMemberMenu.run();
         // check if the user selects return to previous menu option
         if (selectedItem == fetchedMembers.size() + 1) {
             // if previous menu is selected then go back to the manage members menu
             // manage members ==> search members ==> select member
             // select member <== search member <== manage member
-            manageMembers();
             return;
         }
         manageMember(fetchedMembers.get(selectedItem - 1));
@@ -354,21 +363,25 @@ public class Share_item {
 
     public static void addNewMember() {
         InputHandler.promptMessage("please enter < to return to previous menu.");
-        String name = InputHandler.getInput("Enter Name");
-        if (name == null)
-            return;
-        String address = InputHandler.getInput("Enter Address");
-        if (address == null)
-            return;
 
-        String email = InputHandler.getInput("Enter Email");
-        if (email == null)
+        String[] userStrings = InputHandler.getInput(new String[] { "Name", "Address", "Email" }, "Please enter");
+
+        if (userStrings == null) {
             return;
+        }
+
+        String name = userStrings[0];
+
+        String address = userStrings[1];
+
+        String email = userStrings[2];
 
         // System.out.println(memberCollection.isEmailReserved(email));
         while (memberCollection.isEmailReserved(email)) {
             InputHandler.promptMessage("Sorry the email is Already in use.");
             email = InputHandler.getInput("Enter Email");
+            if (email == null)
+                return;
         }
         memberCollection.addMember(new Member(name, address, email, 0));
         InputHandler.promptMessage("member added successfully.");
