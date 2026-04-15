@@ -4,6 +4,8 @@
  */
 package com.mycompany.share_item;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author ayadm
@@ -96,4 +98,52 @@ public abstract class Item {
     public Member getBorrower() {
         return onLoanTo;
     }
+
+    public void displayItemDetails() {
+        InputHandler.promptMessage("====== Item details ======");
+        InputHandler.displayMessage(String.format("Title: %s", this.getTitle()));
+        InputHandler.displayMessage(String.format("Language: %s", this.getLanguage()));
+        displayItemSpecifics();
+        displayItemStatus();
+    };
+
+    public void displayItemStatus() {
+        if (this.isAvailable()) {
+            InputHandler.displayMessage("Status: Available");
+        } else {
+            InputHandler.displayMessage("Status: onLoan");
+            InputHandler.displayMessage(String.format("Borrowed by: %s",
+                    this.getBorrower() == null ? "N/A" : this.getBorrower().getName()));
+
+        }
+        InputHandler.displayMessage(
+                String.format("Donated by: %s", this.getDonator() == null ? "N/A" : this.getDonator().getName()));
+    }
+
+    public abstract void displayItemSpecifics();
+
+    public void updateItemDetails(int selectedField) {
+        if (selectedField < 3) {
+            if (selectedField == 1) {
+                String newTitle = InputHandler.getInput("Please enter new title");
+                if (newTitle == null)
+                    return;
+                this.setTitle(newTitle);
+            } else if (selectedField == 2) {
+                String newLanguage = InputHandler.getInput("Please enter new language");
+                if (newLanguage == null)
+                    return;
+                this.setLanguage(newLanguage);
+            }
+        } else {
+            boolean isConfirmed = updateSubClassAttributes(selectedField);
+            if (!isConfirmed)
+                return;
+        }
+        InputHandler.promptMessage("Item updated successfully.");
+
+    }
+
+    public abstract boolean updateSubClassAttributes(int selectedField);
+
 }

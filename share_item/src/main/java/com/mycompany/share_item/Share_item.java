@@ -38,57 +38,43 @@ public class Share_item {
 
     // this class manages the input validation for non choice inputs such as strings
     public static void manageItem(Item item) {
+        while (true) {
+            // display the item details after selecting
+            item.displayItemDetails();
 
-        InputHandler.promptMessage("====== Item details ======");
-        InputHandler.displayMessage(String.format("Title: %s", item.getTitle()));
-        InputHandler.displayMessage(String.format("Language: %s", item.getLanguage()));
-        if (item instanceof Book) {
-            Book book = (Book) item;
-            InputHandler.displayMessage(String.format("Author: %s", book.getAuthor()));
-            InputHandler.displayMessage(String.format("ISBN: %s", book.getIsbn()));
-        } else if (item instanceof DVD) {
-            DVD dvd = (DVD) item;
-            InputHandler.displayMessage(String.format("Director: %s", dvd.getDirector()));
-            InputHandler.displayMessage("Audio Languages", dvd.getAudioLanguages());
-        }
-        if (item.isAvailable()) {
-            InputHandler.displayMessage("Status: Available");
-        } else {
-            InputHandler.displayMessage("Status: onLoan");
-            InputHandler.displayMessage(String.format("Borrowed by: %s",
-                    item.getBorrower() == null ? "N/A" : item.getBorrower().getName()));
-
-        }
-        InputHandler.displayMessage(
-                String.format("Donated by: %s", item.getDonator() == null ? "N/A" : item.getDonator().getName()));
-
-        ArrayList<String> itemMenuOptions = new ArrayList<>();
-        itemMenuOptions.add("Update Item");
-        itemMenuOptions.add("Remove Item");
-        itemMenuOptions.add("Lend Item");
-        if (!item.isAvailable()) {
-            itemMenuOptions.add("Return item");
-        }
-        Menu itemMenu = new Menu(itemMenuOptions.toArray(new String[0]), true);
-        itemMenu.setMenuName("item menu");
-        int selectedItemMenuOption = itemMenu.run();
-        if (selectedItemMenuOption == 1) {
-            updateItem(item);
-        } else if (selectedItemMenuOption == 2) {
-            removeItem(item);
-        } else if (selectedItemMenuOption == 3) {
-            lendItem(item);
-        } else if (!item.isAvailable() && selectedItemMenuOption == 4) {
-            returnItem(item);
-        } else if (selectedItemMenuOption == itemMenuOptions.size() + 1) {
-            return;
+            ArrayList<String> itemMenuOptions = new ArrayList<>();
+            itemMenuOptions.add("Update Item");
+            itemMenuOptions.add("Remove Item");
+            itemMenuOptions.add("Lend Item");
+            if (!item.isAvailable()) {
+                itemMenuOptions.add("Return item");
+            }
+            Menu itemMenu = new Menu(itemMenuOptions.toArray(new String[0]), true);
+            itemMenu.setMenuName("item menu");
+            int selectedItemMenuOption = itemMenu.run();
+            if (selectedItemMenuOption == 1) {
+                updateItem(item);
+            } else if (selectedItemMenuOption == 2) {
+                removeItem(item);
+                return;
+            } else if (selectedItemMenuOption == 3) {
+                lendItem(item);
+            } else if (!item.isAvailable() && selectedItemMenuOption == 4) {
+                returnItem(item);
+            } else if (selectedItemMenuOption == itemMenuOptions.size() + 1) {
+                return;
+            }
         }
 
     }
 
     public static void searchItems() {
 
+        InputHandler.promptMessage("Please enter < to return to main menu");
         String searchKeyword = InputHandler.getInput("Please enter item title");
+        if (searchKeyword == null)
+            return;
+
         // System.out.println(searchKeyword);
         ArrayList<Item> fetchedItems = itemCollection.searchItems(searchKeyword);
         // System.out.println(fetchedItems);
@@ -109,7 +95,6 @@ public class Share_item {
 
     public static void addItem() {
 
-        InputHandler.promptMessage("====== Please choose the member =======");
         int selectedMemberOption = getMemberChoice();
         if (selectedMemberOption == memberCollection.getAllMembers().size() + 1) {
             return;
@@ -127,9 +112,9 @@ public class Share_item {
         String[] dvdInfoFields = new String[] { "Title", "Case Language", "Audio Languages(seprated by commas)",
                 "Director" };
         ArrayList<String> userInputCollection = new ArrayList<>();
+        InputHandler.promptMessage("please enter < to go back to main menu.");
 
         // if the item is book
-        InputHandler.promptMessage("please enter < to go back to Main menu");
         if (selectedType == 1) {
             for (String info : bookInfoFields) {
                 String userInput = InputHandler.getInput(String.format("Please enter: %s", info));
@@ -161,7 +146,6 @@ public class Share_item {
             itemCollection.addDVD(title, director, selectedMember, caseLanguage, audioLanguages.split(","));
 
         } else if (selectedType == itemTypes.length + 1) {
-            addItem();
             return;
         }
         InputHandler.promptMessage("Item added successfully.");
@@ -180,58 +164,17 @@ public class Share_item {
             updateFieldOptions.add("Director");
         }
         Menu updateFieldOptionsMenu = new Menu(updateFieldOptions.toArray(new String[0]), true);
+        updateFieldOptionsMenu.setMenuName("update items menu");
         int selectedField = updateFieldOptionsMenu.run();
 
-        InputHandler.promptMessage("please enter < to go back to main menu.");
-        // if the user selects the return to previous menu
+        // if the user selects the return to main menu
         if (selectedField == updateFieldOptions.size() + 1) {
-            manageItem(item);
-        }
-        if (selectedField == 1) {
-            String newTitle = InputHandler.getInput("Please enter new title");
-            if (newTitle == null)
-                return;
-            item.setTitle(newTitle);
-        } else if (selectedField == 2) {
-            String newLanguage = InputHandler.getInput("Please enter new language");
-            if (newLanguage == null)
-                return;
-            item.setLanguage(newLanguage);
-        }
-
-        if (item instanceof Book) {
-            Book book = (Book) item;
-            if (selectedField == 3) {
-                String newAuthor = InputHandler.getInput("Please enter new Author's name");
-                if (newAuthor == null)
-                    return;
-                book.setAuthor(newAuthor);
-            } else if (selectedField == 4) {
-                String newISBN = InputHandler.getInput("Please enter new ISBN");
-                if (newISBN == null)
-                    return;
-                book.setIsbn(newISBN);
-            }
-
-        } else if (item instanceof DVD) {
-            DVD dvd = (DVD) item;
-            if (selectedField == 3) {
-                String newAudioLanguages = InputHandler
-                        .getInput("Please enter new audio languages (seperated by commas)");
-                if (newAudioLanguages == null)
-                    return;
-                dvd.setAudioLanguages(newAudioLanguages.split(","));
-            } else if (selectedField == 4) {
-                String newDirector = InputHandler.getInput("Please enter new Director");
-                if (newDirector == null)
-                    return;
-                dvd.setDirector(newDirector);
-            }
+            return;
+        } else {
+            InputHandler.promptMessage("please enter < to go back to main menu.");
+            item.updateItemDetails(selectedField);
 
         }
-
-        InputHandler.promptMessage("Item updated successfully.");
-
     }
 
     public static void removeItem(Item item) {
@@ -325,8 +268,13 @@ public class Share_item {
     }
 
     public static void searchMembers() {
-
+        InputHandler.promptMessage("Please enter < to go back to main menu");
         String searchKeyword = InputHandler.getInput("Please enter member's name");
+        if (searchKeyword == null) {
+            // immediately return to the previous menu ==> main member menu
+            // as soon as return is executed it will go back to main member menu
+            return;
+        }
         // System.out.println(searchKeyword);
         ArrayList<Member> fetchedMembers = memberCollection.searchMembers(searchKeyword);
         // System.out.println(fetchedMembers);
@@ -339,13 +287,13 @@ public class Share_item {
             fetchedMemberNames[i] = fetchedMembers.get(i).getName();
         }
         Menu fetchedMemberMenu = new Menu(fetchedMemberNames, true);
+        fetchedMemberMenu.setMenuName("member search results");
         int selectedItem = fetchedMemberMenu.run();
         // check if the user selects return to previous menu option
         if (selectedItem == fetchedMembers.size() + 1) {
             // if previous menu is selected then go back to the manage members menu
             // manage members ==> search members ==> select member
             // select member <== search member <== manage member
-            manageMembers();
             return;
         }
         manageMember(fetchedMembers.get(selectedItem - 1));
@@ -354,21 +302,25 @@ public class Share_item {
 
     public static void addNewMember() {
         InputHandler.promptMessage("please enter < to return to previous menu.");
-        String name = InputHandler.getInput("Enter Name");
-        if (name == null)
-            return;
-        String address = InputHandler.getInput("Enter Address");
-        if (address == null)
-            return;
 
-        String email = InputHandler.getInput("Enter Email");
-        if (email == null)
+        String[] userStrings = InputHandler.getInput(new String[] { "Name", "Address", "Email" }, "Please enter");
+
+        if (userStrings == null) {
             return;
+        }
+
+        String name = userStrings[0];
+
+        String address = userStrings[1];
+
+        String email = userStrings[2];
 
         // System.out.println(memberCollection.isEmailReserved(email));
         while (memberCollection.isEmailReserved(email)) {
             InputHandler.promptMessage("Sorry the email is Already in use.");
             email = InputHandler.getInput("Enter Email");
+            if (email == null)
+                return;
         }
         memberCollection.addMember(new Member(name, address, email, 0));
         InputHandler.promptMessage("member added successfully.");
@@ -377,7 +329,9 @@ public class Share_item {
 
     public static void updateMember(Member member) {
         String[] memberUpdateOptions = new String[] { "Name", "Email", "Address" };
-        Menu memberUpdateOptionsMenu = new Menu(memberUpdateOptions);
+        Menu memberUpdateOptionsMenu = new Menu(memberUpdateOptions, true);
+        memberUpdateOptionsMenu.setMenuName("Member update menu");
+
         int selectedUpdateField = memberUpdateOptionsMenu.run();
         if (selectedUpdateField == memberUpdateOptions.length + 1) {
             return;
@@ -405,6 +359,7 @@ public class Share_item {
                 return;
             member.setAddress(newAddress);
         }
+
         InputHandler.promptMessage("member updated successfully.");
     }
 
@@ -473,4 +428,5 @@ public class Share_item {
         }
 
     }
+
 }

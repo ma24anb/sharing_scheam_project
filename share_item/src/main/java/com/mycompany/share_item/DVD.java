@@ -16,7 +16,7 @@ public class DVD extends Item {
 
     // Constructor
     public DVD(String title, String director, Member donatedBy, String language,
-             String[] audioLanguages) {
+            String[] audioLanguages) {
         super(title, language, donatedBy);
         this.director = director;
         this.audioLanguages = audioLanguages;
@@ -42,6 +42,11 @@ public class DVD extends Item {
         this.audioLanguages = audioLanguages;
     }
 
+    public void displayItemSpecifics() {
+        InputHandler.displayMessage(String.format("Director: %s", this.getDirector()));
+        InputHandler.displayMessage("Audio Languages", this.getAudioLanguages());
+    }
+
     // toString method
     @Override
     public String toString() {
@@ -51,5 +56,21 @@ public class DVD extends Item {
                 + ", language='" + getLanguage() + '\''
                 + ", Audio Languages=" + audioLanguages + " mins"
                 + '}';
+    }
+
+    public boolean updateSubClassAttributes(int selectedField) {
+        if (selectedField == 3) {
+            String newAudioLanguages = InputHandler
+                    .getInput("Please enter new audio languages (seperated by commas)");
+            if (newAudioLanguages == null)
+                return false;
+            this.setAudioLanguages(newAudioLanguages.split(","));
+        } else if (selectedField == 4) {
+            String newDirector = InputHandler.getInput("Please enter new Director");
+            if (newDirector == null)
+                return false;
+            this.setDirector(newDirector);
+        }
+        return false;
     }
 }

@@ -31,11 +31,33 @@ public class InputHandler {
 
             inputStr = input.nextLine();
         }
-        if(inputStr.equalsIgnoreCase("<")){
+        if (inputStr.equalsIgnoreCase("<")) {
             return null;
         }
         // Removed input.close() to prevent closing System.in
         return inputStr;
+    }
+
+    public static String[] getInput(String[] messages, String precursorString) {
+        String[] userInputs = new String[messages.length];
+        for (int i = 0; i < messages.length; i++) {
+            promptMessage(precursorString + " " + messages[i]);
+            String inputStr = input.nextLine();
+            // never use .equals for checking whether an input is empty or not.
+            while (inputStr.trim().isEmpty()) {
+                promptMessage("cannot be empty! please try again.");
+                promptMessage(precursorString + " " + messages[i]);
+
+                inputStr = input.nextLine();
+            }
+            if (inputStr.equalsIgnoreCase("<")) {
+                return null;
+            }
+            userInputs[i] = inputStr;
+        }
+        // Removed input.close() to prevent closing System.in
+        return userInputs;
+
     }
 
     public static int getIntegerInput(String message) {
