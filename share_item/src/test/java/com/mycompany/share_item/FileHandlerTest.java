@@ -5,10 +5,6 @@ import java.io.*;
 import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.*;
 
-/**
- * JUnit 5 tests for FileHandler.
- * Tests load(), save(), and the round-trip (save then reload).
- */
 public class FileHandlerTest {
 
     private static final String TEMP_INPUT  = "test_input.dat";
@@ -39,9 +35,7 @@ public class FileHandlerTest {
         new File(TEMP_OUTPUT).delete();
     }
 
-    // ------------------------------------------------------------------
     // LOAD tests
-    // ------------------------------------------------------------------
 
     @Test
     void testCorrectNumberOfMembersLoaded() throws IOException {
@@ -170,9 +164,7 @@ public class FileHandlerTest {
                 "John Wong should have at least one donated item");
     }
 
-    // ------------------------------------------------------------------
     // SAVE + reload (round-trip) tests
-    // ------------------------------------------------------------------
 
     @Test
     void testSaveAndReloadPreservesMembers() throws IOException {
