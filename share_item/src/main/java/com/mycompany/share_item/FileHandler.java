@@ -72,7 +72,7 @@ public class FileHandler {
         }
         reader.close();
 
-        // PASS 2 — reconstruct loan relationships
+        // PASS 2 reconstruct loan relationships
         //
         // We must do this AFTER all members are loaded because a borrower email
         // might appear on line 1 while the Member line for that person is line 3.
@@ -81,8 +81,8 @@ public class FileHandler {
             if (borrowerEmail != null && !borrowerEmail.isEmpty()) {
                 Member borrower = memberCollection.getMemberByEmail(borrowerEmail);
                 if (borrower != null) {
-                    // Set loan directly on the item — bypasses borrowing-limit
-                    // checks in Member.lend(), which is correct here because we
+                    // Set loan directly on the item   bypasses borrowing-limit
+                    // checks in Member.lend()  which is correct here because we
                     // are restoring a previously saved valid state, not making a new loan
                     item.loanTo(borrower);
                     // Add directly to borrowing list for the same reason
@@ -95,12 +95,7 @@ public class FileHandler {
             }
         }
 
-        // PASS 3 — sync each member's donatedItems list
-        //
-        // We use collection.addItem() instead of collection.addBook/addDVD()
-        // because those methods call donator.addDonation() which would crash
-        // with a NullPointerException for orphaned items (donatedBy == null).
-        // So we sync the donatedItems lists manually here instead.
+        // PASS 3 ync each member's donatedItems list
         for (Item item : allItems) {
             Member donator = item.getDonator();
             if (donator != null && !donator.getDonatedItems().contains(item)) {
@@ -114,8 +109,6 @@ public class FileHandler {
      * Saves the current system state to the given file path. Call this when the
      * user selects save and provides a filename.
      *
-     * Orphaned items (donatedBy == null) are written first, before any Member
-     * blocks, matching the required input file format.
      *
      * @param filePath         destination file path entered by the user
      * @param memberCollection the MemberCollection containing all members
