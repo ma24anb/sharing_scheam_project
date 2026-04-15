@@ -51,4 +51,9 @@ public class Book extends Item {
                 ", isbn='" + isbn + '\'' +
                 '}';
     }
+
+    public void displayItemSpecifics() {
+        InputHandler.displayMessage(String.format("Author: %s", this.getAuthor()));
+        InputHandler.displayMessage(String.format("ISBN: %s", this.getIsbn()));
+    }
 }

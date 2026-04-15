@@ -39,28 +39,8 @@ public class Share_item {
     // this class manages the input validation for non choice inputs such as strings
     public static void manageItem(Item item) {
 
-        InputHandler.promptMessage("====== Item details ======");
-        InputHandler.displayMessage(String.format("Title: %s", item.getTitle()));
-        InputHandler.displayMessage(String.format("Language: %s", item.getLanguage()));
-        if (item instanceof Book) {
-            Book book = (Book) item;
-            InputHandler.displayMessage(String.format("Author: %s", book.getAuthor()));
-            InputHandler.displayMessage(String.format("ISBN: %s", book.getIsbn()));
-        } else if (item instanceof DVD) {
-            DVD dvd = (DVD) item;
-            InputHandler.displayMessage(String.format("Director: %s", dvd.getDirector()));
-            InputHandler.displayMessage("Audio Languages", dvd.getAudioLanguages());
-        }
-        if (item.isAvailable()) {
-            InputHandler.displayMessage("Status: Available");
-        } else {
-            InputHandler.displayMessage("Status: onLoan");
-            InputHandler.displayMessage(String.format("Borrowed by: %s",
-                    item.getBorrower() == null ? "N/A" : item.getBorrower().getName()));
-
-        }
-        InputHandler.displayMessage(
-                String.format("Donated by: %s", item.getDonator() == null ? "N/A" : item.getDonator().getName()));
+        // display the item details after selecting
+        item.displayItemDetails();
 
         ArrayList<String> itemMenuOptions = new ArrayList<>();
         itemMenuOptions.add("Update Item");
@@ -393,7 +373,7 @@ public class Share_item {
     public static void updateMember(Member member) {
         String[] memberUpdateOptions = new String[] { "Name", "Email", "Address" };
         Menu memberUpdateOptionsMenu = new Menu(memberUpdateOptions);
-        
+
         int selectedUpdateField = memberUpdateOptionsMenu.run();
         if (selectedUpdateField == memberUpdateOptions.length + 1) {
             return;
@@ -489,4 +469,5 @@ public class Share_item {
         }
 
     }
+
 }

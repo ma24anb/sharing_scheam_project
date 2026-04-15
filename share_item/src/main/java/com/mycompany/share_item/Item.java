@@ -96,4 +96,27 @@ public abstract class Item {
     public Member getBorrower() {
         return onLoanTo;
     }
+
+    public void displayItemDetails() {
+        InputHandler.promptMessage("====== Item details ======");
+        InputHandler.displayMessage(String.format("Title: %s", this.getTitle()));
+        InputHandler.displayMessage(String.format("Language: %s", this.getLanguage()));
+        displayItemSpecifics();
+        displayItemStatus();
+    };
+
+    public void displayItemStatus() {
+        if (this.isAvailable()) {
+            InputHandler.displayMessage("Status: Available");
+        } else {
+            InputHandler.displayMessage("Status: onLoan");
+            InputHandler.displayMessage(String.format("Borrowed by: %s",
+                    this.getBorrower() == null ? "N/A" : this.getBorrower().getName()));
+
+        }
+        InputHandler.displayMessage(
+                String.format("Donated by: %s", this.getDonator() == null ? "N/A" : this.getDonator().getName()));
+    }
+
+    public abstract void displayItemSpecifics();
 }
