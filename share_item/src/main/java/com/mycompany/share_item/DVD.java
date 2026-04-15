@@ -57,4 +57,20 @@ public class DVD extends Item {
                 + ", Audio Languages=" + audioLanguages + " mins"
                 + '}';
     }
+
+    public boolean updateSubClassAttributes(int selectedField) {
+        if (selectedField == 3) {
+            String newAudioLanguages = InputHandler
+                    .getInput("Please enter new audio languages (seperated by commas)");
+            if (newAudioLanguages == null)
+                return false;
+            this.setAudioLanguages(newAudioLanguages.split(","));
+        } else if (selectedField == 4) {
+            String newDirector = InputHandler.getInput("Please enter new Director");
+            if (newDirector == null)
+                return false;
+            this.setDirector(newDirector);
+        }
+        return false;
+    }
 }

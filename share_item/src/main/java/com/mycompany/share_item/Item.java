@@ -4,6 +4,8 @@
  */
 package com.mycompany.share_item;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author ayadm
@@ -119,4 +121,29 @@ public abstract class Item {
     }
 
     public abstract void displayItemSpecifics();
+
+    public void updateItemDetails(int selectedField) {
+        if (selectedField < 3) {
+            if (selectedField == 1) {
+                String newTitle = InputHandler.getInput("Please enter new title");
+                if (newTitle == null)
+                    return;
+                this.setTitle(newTitle);
+            } else if (selectedField == 2) {
+                String newLanguage = InputHandler.getInput("Please enter new language");
+                if (newLanguage == null)
+                    return;
+                this.setLanguage(newLanguage);
+            }
+        } else {
+            boolean isConfirmed = updateSubClassAttributes(selectedField);
+            if (!isConfirmed)
+                return;
+        }
+        InputHandler.promptMessage("Item updated successfully.");
+
+    }
+
+    public abstract boolean updateSubClassAttributes(int selectedField);
+
 }

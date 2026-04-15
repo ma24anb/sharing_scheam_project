@@ -56,4 +56,19 @@ public class Book extends Item {
         InputHandler.displayMessage(String.format("Author: %s", this.getAuthor()));
         InputHandler.displayMessage(String.format("ISBN: %s", this.getIsbn()));
     }
+
+    public boolean updateSubClassAttributes(int selectedField) {
+        if (selectedField == 3) {
+            String newAuthor = InputHandler.getInput("Please enter new Author's name");
+            if (newAuthor == null)
+                return false;
+            this.setAuthor(newAuthor);
+        } else if (selectedField == 4) {
+            String newISBN = InputHandler.getInput("Please enter new ISBN");
+            if (newISBN == null)
+                return false;
+            this.setIsbn(newISBN);
+        }
+        return true;
+    }
 }
