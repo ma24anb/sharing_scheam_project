@@ -182,6 +182,7 @@ public class Share_item {
             updateFieldOptions.add("Director");
         }
         Menu updateFieldOptionsMenu = new Menu(updateFieldOptions.toArray(new String[0]), true);
+        updateFieldOptionsMenu.setMenuName("update items menu");
         int selectedField = updateFieldOptionsMenu.run();
 
         // if the user selects the return to previous menu
@@ -392,6 +393,7 @@ public class Share_item {
     public static void updateMember(Member member) {
         String[] memberUpdateOptions = new String[] { "Name", "Email", "Address" };
         Menu memberUpdateOptionsMenu = new Menu(memberUpdateOptions);
+        
         int selectedUpdateField = memberUpdateOptionsMenu.run();
         if (selectedUpdateField == memberUpdateOptions.length + 1) {
             return;
