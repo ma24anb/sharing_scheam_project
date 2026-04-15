@@ -38,30 +38,32 @@ public class Share_item {
 
     // this class manages the input validation for non choice inputs such as strings
     public static void manageItem(Item item) {
+        while (true) {
+            // display the item details after selecting
+            item.displayItemDetails();
 
-        // display the item details after selecting
-        item.displayItemDetails();
-
-        ArrayList<String> itemMenuOptions = new ArrayList<>();
-        itemMenuOptions.add("Update Item");
-        itemMenuOptions.add("Remove Item");
-        itemMenuOptions.add("Lend Item");
-        if (!item.isAvailable()) {
-            itemMenuOptions.add("Return item");
-        }
-        Menu itemMenu = new Menu(itemMenuOptions.toArray(new String[0]), true);
-        itemMenu.setMenuName("item menu");
-        int selectedItemMenuOption = itemMenu.run();
-        if (selectedItemMenuOption == 1) {
-            updateItem(item);
-        } else if (selectedItemMenuOption == 2) {
-            removeItem(item);
-        } else if (selectedItemMenuOption == 3) {
-            lendItem(item);
-        } else if (!item.isAvailable() && selectedItemMenuOption == 4) {
-            returnItem(item);
-        } else if (selectedItemMenuOption == itemMenuOptions.size() + 1) {
-            return;
+            ArrayList<String> itemMenuOptions = new ArrayList<>();
+            itemMenuOptions.add("Update Item");
+            itemMenuOptions.add("Remove Item");
+            itemMenuOptions.add("Lend Item");
+            if (!item.isAvailable()) {
+                itemMenuOptions.add("Return item");
+            }
+            Menu itemMenu = new Menu(itemMenuOptions.toArray(new String[0]), true);
+            itemMenu.setMenuName("item menu");
+            int selectedItemMenuOption = itemMenu.run();
+            if (selectedItemMenuOption == 1) {
+                updateItem(item);
+            } else if (selectedItemMenuOption == 2) {
+                removeItem(item);
+                return;
+            } else if (selectedItemMenuOption == 3) {
+                lendItem(item);
+            } else if (!item.isAvailable() && selectedItemMenuOption == 4) {
+                returnItem(item);
+            } else if (selectedItemMenuOption == itemMenuOptions.size() + 1) {
+                return;
+            }
         }
 
     }
@@ -110,6 +112,7 @@ public class Share_item {
         String[] dvdInfoFields = new String[] { "Title", "Case Language", "Audio Languages(seprated by commas)",
                 "Director" };
         ArrayList<String> userInputCollection = new ArrayList<>();
+        InputHandler.promptMessage("please enter < to go back to main menu.");
 
         // if the item is book
         if (selectedType == 1) {
@@ -143,7 +146,6 @@ public class Share_item {
             itemCollection.addDVD(title, director, selectedMember, caseLanguage, audioLanguages.split(","));
 
         } else if (selectedType == itemTypes.length + 1) {
-            addItem();
             return;
         }
         InputHandler.promptMessage("Item added successfully.");
@@ -165,9 +167,8 @@ public class Share_item {
         updateFieldOptionsMenu.setMenuName("update items menu");
         int selectedField = updateFieldOptionsMenu.run();
 
-        // if the user selects the return to previous menu
+        // if the user selects the return to main menu
         if (selectedField == updateFieldOptions.size() + 1) {
-            manageItem(item);
             return;
         } else {
             InputHandler.promptMessage("please enter < to go back to main menu.");
