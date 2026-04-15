@@ -329,7 +329,8 @@ public class Share_item {
 
     public static void updateMember(Member member) {
         String[] memberUpdateOptions = new String[] { "Name", "Email", "Address" };
-        Menu memberUpdateOptionsMenu = new Menu(memberUpdateOptions);
+        Menu memberUpdateOptionsMenu = new Menu(memberUpdateOptions, true);
+        memberUpdateOptionsMenu.setMenuName("Member update menu");
 
         int selectedUpdateField = memberUpdateOptionsMenu.run();
         if (selectedUpdateField == memberUpdateOptions.length + 1) {
@@ -358,6 +359,7 @@ public class Share_item {
                 return;
             member.setAddress(newAddress);
         }
+
         InputHandler.promptMessage("member updated successfully.");
     }
 
